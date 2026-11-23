@@ -338,6 +338,31 @@
   $('#zoomIn').onclick = function () { App.zoom = Math.min(1.5, (App.zoom || +getComputedStyle($('#pages')).getPropertyValue('--z') || .6) + .1); applyZoom(); };
   $('#zoomOut').onclick = function () { App.zoom = Math.max(.2, (App.zoom || +getComputedStyle($('#pages')).getPropertyValue('--z') || .6) - .1); applyZoom(); };
   $('#zoomFit').onclick = function () { App.zoom = 0; applyZoom(); };
+
+  // No page zoom on phones (it distorts the layout) – except a pinch-zoom of the preview pages, handled by the app.
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) { document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+  document.addEventListener('touchmove', function (e) { if (e.touches.length > 1 && !e.target.closest('#pvScroll')) e.preventDefault(); }, { passive: false });
+  (function () {
+    var sc = $('#pvScroll'), pinch = null;
+    function dist(t) { var dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY; return Math.sqrt(dx * dx + dy * dy); }
+    function curZ() { return +getComputedStyle($('#pages')).getPropertyValue('--z') || .6; }
+    sc.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) {
+        var r = sc.getBoundingClientRect(), mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left, my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top;
+        pinch = { d: dist(e.touches), z: curZ(), mx: mx, my: my, sx: sc.scrollLeft, sy: sc.scrollTop, wy: window.scrollY };
+      }
+    }, { passive: true });
+    sc.addEventListener('touchmove', function (e) {
+      if (!pinch || e.touches.length !== 2) return;
+      e.preventDefault();
+      var z = Math.max(.25, Math.min(2.5, pinch.z * dist(e.touches) / pinch.d)), k = z / pinch.z;
+      App.zoom = z; $('#pages').style.setProperty('--z', z.toFixed(3));
+      sc.scrollLeft = (pinch.sx + pinch.mx) * k - pinch.mx;
+      if (window.innerWidth < 900) window.scrollTo(window.scrollX, (pinch.wy + pinch.my) * k - pinch.my);   // phones scroll the window vertically
+      else sc.scrollTop = (pinch.sy + pinch.my) * k - pinch.my;
+    }, { passive: false });
+    sc.addEventListener('touchend', function (e) { if (e.touches.length < 2) pinch = null; });
+  })();
   window.addEventListener('resize', debounce(function () { applyZoom(); renderGallery(); }, 200));
 
   /* ================= DESIGN GALLERY ================= */

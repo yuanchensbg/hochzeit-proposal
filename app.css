@@ -238,3 +238,14 @@ a.btn { text-decoration: none; display: inline-block; }
 .dz-fav { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: #c9c1ba; font-size: 17px; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.15); z-index: 2; }
 .dz-fav.on { color: #d4a017; }
 .gal-sec { grid-column: 1 / -1; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 6px 2px -2px; font-weight: 600; }
+
+/* phones: no page zoom (inputs >= 16px stop iOS auto-zoom); preview pages can be pinch-zoomed by the app */
+html, body { touch-action: pan-x pan-y; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+button, .btn, .sendbtn, .dz, .chip, label { touch-action: manipulation; }
+@media (max-width: 899px) {
+  input, textarea, select { font-size: 16px; }
+  .curbar select, .cb-switch select { font-size: 16px; }
+  .pv-scroll { overflow-x: auto; touch-action: pan-x pan-y; }
+  .pv-pages { align-items: flex-start; width: max-content; min-width: 100%; }
+  .pv-pages .page { margin: 0 auto; }
+}

@@ -2,6 +2,11 @@
 
 Alle Versionen der Hochzeitsangebot-App. Format: `Major.Minor` – Minor bei jedem Update, Major bei großen Umbauten.
 
+## 1.1 – 2026-11-23
+
+- Handy: kein Zoomen mehr in der App (verhindert verzogene Ansicht), Eingabefelder ohne Auto-Zoom
+- Vorschau: mit zwei Fingern zoomen
+
 ## 1.0 – 2026-11-23
 
 - Erste Version: 15 Designs (5 mehrseitig, 10 zweiseitig)

@@ -7,7 +7,7 @@
 | Jede Veröffentlichung (Texte, Preise, Designs, Code) | 1.0 → 1.1 → 1.2 … | Minor + 1 |
 | Großes Update (Häkchen „Großes Update“) | 1.7 → 2.0 | Major + 1, Minor = 0 |
 
-Aktuelle Version: **1.0** (Erstveröffentlichung).
+Aktuelle Version: siehe `CHANGELOG.md` (1.0 = Erstveröffentlichung).
 
 ## Ablauf beim Veröffentlichen
 

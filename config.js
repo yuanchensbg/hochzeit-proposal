@@ -1,6 +1,7 @@
 window.APP_CONFIG = {
-  "appVersion": "1.0",
+  "appVersion": "1.1",
   "changelog": [
+    { "version": "1.1", "date": "2026-11-23", "notes": ["Handy: kein Zoomen mehr in der App (verhindert verzogene Ansicht), Eingabefelder ohne Auto-Zoom", "Vorschau: mit zwei Fingern zoomen"] },
     { "version": "1.0", "date": "2026-11-23", "notes": ["Erste Version: 15 Designs (5 mehrseitig, 10 zweiseitig)", "Foto-Datenbank mit Cloud, Filtern, Zuschneiden und Drehen", "Angebots-Verwaltung mit Status, Verlauf und Versionen", "Versand als PDF, per WhatsApp und als HTML-E-Mail", "Textvorschläge, Lieblingsdesigns, Logo-Auswahl", "Admin-App mit Design-Studio (KI-Prompt), Rechten und Veröffentlichen", "Installierbar als App auf iPhone und Android"] }
   ],
   "studio": {

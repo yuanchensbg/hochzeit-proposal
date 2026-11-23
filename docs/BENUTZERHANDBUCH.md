@@ -35,7 +35,7 @@ Oben in der Angebotsleiste: **Auswahlliste** = zwischen Entwürfen wechseln, **�
 | **Paar** | Namen, Hochzeitsdatum, Location, Angebotsdatum, E-Mail und WhatsApp-Nummer des Paares, interne Notiz. |
 | **Fotos** | Titelbild, „Über mich“, 3 Galeriefotos. „Wählen“ öffnet die Foto-Datenbank. „Bearbeiten“ = Filter, Zuschneiden & Drehen, Bildausschnitt. |
 | **Inhalte** | Alle Texte, Pakete und Preise für **dieses** Angebot. „Vorschläge ▾“ zeigt fertige Textvarianten – oder frei schreiben. Seiten ein-/ausblenden. |
-| **Vorschau** | (Handy) Alle Seiten wie im PDF. Am PC immer rechts sichtbar. |
+| **Vorschau** | (Handy) Alle Seiten wie im PDF – mit zwei Fingern zoomen, ⤢ passt wieder ein. Am PC immer rechts sichtbar (− / + / ⤢). Außerhalb der Vorschau ist Zoomen am Handy gesperrt. |
 | **Senden** | siehe Kapitel 5. |
 
 Platzhalter in Texten: `{name1} {name2} {namen} {datum} {ort} {studio} {owner} {gueltig}`.
