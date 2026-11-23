@@ -17,7 +17,8 @@
 <style id="customCss"></style>
 <title>Hochzeitsangebot · Michaela Raninger Fotografie</title>
 <meta name="apple-mobile-web-app-title" content="Angebote">
-<link rel="manifest" href="manifest.webmanifest">
+<script>/* Samsung Internet builds an outdated WebAPK that Google Play Protect blocks -> no manifest there, install via Chrome */
+if (!/SamsungBrowser/i.test(navigator.userAgent)) document.write('<link rel="manifest" href="manifest.webmanifest">');</script>
 </head>
 <body>
 <script src="logos.js"></script>

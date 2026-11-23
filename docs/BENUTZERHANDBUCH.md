@@ -9,7 +9,7 @@ Beim ersten Öffnen am Handy erscheint automatisch die Anleitung **„Als App sp
 **iPhone (Safari):** Teilen-Symbol (□↑) unten → „Zum Home-Bildschirm“ → „Hinzufügen“.
 **iPhone (Chrome):** Teilen-Symbol oben rechts → „Zum Home-Bildschirm“.
 **Android (Chrome):** Button „Jetzt installieren“ oder Menü ⋮ → „App installieren“.
-**Samsung Internet:** bitte „In Chrome öffnen“ und dort installieren – die Installation über Samsung Internet blockiert Google Play Protect („Unsichere App blockiert“). Alternativ in Samsung Internet: Menü ☰ → „Seite hinzufügen zu“ → „Startbildschirm“.
+**Samsung Internet:** bitte „In Chrome öffnen“ und dort installieren – die Installation über Samsung Internet blockiert Google Play Protect („Unsichere App blockiert“). Alternativ in Samsung Internet: Menü ☰ → „Seite hinzufügen zu“ → „Startbildschirm“. Wurde früher schon über Samsung Internet installiert und erscheint „Unsichere App blockiert“: Einstellungen → Apps → „Angebote“ → Deinstallieren, dann über Chrome neu installieren.
 **PC (Chrome/Edge):** Symbol „App installieren“ rechts in der Adressleiste oder Button „App installieren“ oben.
 
 Wurde der Link in WhatsApp/Instagram geöffnet: zuerst „Im Browser öffnen“ wählen.

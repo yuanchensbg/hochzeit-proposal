@@ -1,6 +1,7 @@
 window.APP_CONFIG = {
-  "appVersion": "1.2",
+  "appVersion": "1.3",
   "changelog": [
+    { "version": "1.3", "date": "2026-11-23", "notes": ["Samsung Internet: App wird dort nicht mehr als installierbar angeboten (Play Protect blockierte die Samsung-Installation) – Installation über Chrome"] },
     { "version": "1.2", "date": "2026-11-23", "notes": ["Vorlagen: Angebot mit Design, Paketen, Preisen, Texten und Fotos als Vorlage speichern; neuer Entwurf aus Vorlage", "Cloud-Zugang wird verschlüsselt mitgeliefert – Kundin gibt pro Gerät einmal das Cloud-Passwort ein", "Handy-Vorschau: Seiten werden exakt wie im PDF verkleinert (kein Verziehen mehr)", "Neues Gerät lädt zuerst die Cloud-Angebote statt einen leeren Entwurf anzulegen", "WhatsApp/Teilen: Teilen-Menü öffnet direkt beim Antippen; falls ein Gerät blockiert, Alternative „PDF speichern & WhatsApp öffnen“", "Samsung Internet: Installation über Chrome (Play Protect blockiert die Samsung-Installation)"] },
     { "version": "1.1", "date": "2026-11-23", "notes": ["Handy: kein Zoomen mehr in der App (verhindert verzogene Ansicht), Eingabefelder ohne Auto-Zoom", "Vorschau: mit zwei Fingern zoomen"] },
     { "version": "1.0", "date": "2026-11-23", "notes": ["Erste Version: 15 Designs (5 mehrseitig, 10 zweiseitig)", "Foto-Datenbank mit Cloud, Filtern, Zuschneiden und Drehen", "Angebots-Verwaltung mit Status, Verlauf und Versionen", "Versand als PDF, per WhatsApp und als HTML-E-Mail", "Textvorschläge, Lieblingsdesigns, Logo-Auswahl", "Admin-App mit Design-Studio (KI-Prompt), Rechten und Veröffentlichen", "Installierbar als App auf iPhone und Android"] }

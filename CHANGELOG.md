@@ -2,6 +2,10 @@
 
 Alle Versionen der Hochzeitsangebot-App. Format: `Major.Minor` – Minor bei jedem Update, Major bei großen Umbauten.
 
+## 1.3 – 2026-11-23
+
+- Samsung Internet: App wird dort nicht mehr als installierbar angeboten (Play Protect blockierte die Samsung-Installation) – Installation über Chrome
+
 ## 1.2 – 2026-11-23
 
 - Vorlagen: Angebot mit Design, Paketen, Preisen, Texten und Fotos als Vorlage speichern; neuer Entwurf aus Vorlage

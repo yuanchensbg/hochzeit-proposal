@@ -18,7 +18,8 @@
 <title>Admin · Angebots-Studio</title>
 <meta name="robots" content="noindex">
 <meta name="apple-mobile-web-app-title" content="Angebote Admin">
-<link rel="manifest" href="admin.webmanifest">
+<script>/* Samsung Internet builds an outdated WebAPK that Google Play Protect blocks -> no manifest there, install via Chrome */
+if (!/SamsungBrowser/i.test(navigator.userAgent)) document.write('<link rel="manifest" href="admin.webmanifest">');</script>
 <script>window.APP_MODE = 'admin';</script>
 </head>
 <body>
