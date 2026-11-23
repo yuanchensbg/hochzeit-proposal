@@ -70,14 +70,15 @@ details.box[open] { padding-bottom: 12px; }
 .pv-scroll { flex: 1; overflow: auto; padding: 4px 18px 40px; }
 .pv-pages { display: flex; flex-direction: column; align-items: center; gap: 22px; }
 .pv-pages .pp { display: contents; }
-.pv-pages .page { box-shadow: 0 6px 24px rgba(60,40,30,.14); flex: none; zoom: var(--z, .6); }
+.pv-pages .pgw { width: calc(794px * var(--z, .6)); height: calc(1123px * var(--z, .6)); flex: none; position: relative; box-shadow: 0 6px 24px rgba(60,40,30,.14); }
+.pv-pages .pgw > .page { position: absolute; top: 0; left: 0; transform: scale(var(--z, .6)); transform-origin: 0 0; }
 
 /* gallery */
 .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .dz { border: 2px solid transparent; border-radius: 12px; background: var(--card); padding: 8px; cursor: pointer; text-align: left; transition: border-color .15s; }
 .dz.on { border-color: var(--ink); }
 .dz .thumb { width: 100%; aspect-ratio: 794 / 1123; overflow: hidden; border-radius: 6px; position: relative; background: #eee; }
-.dz .thumb > div { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+.dz .thumb > div { position: absolute; top: 0; left: 0; width: 794px; transform-origin: 0 0; }
 .dz b { display: block; font-size: 13px; margin-top: 7px; }
 .dz span { display: block; font-size: 11.5px; color: var(--muted); line-height: 1.35; }
 .dz .tag { display: inline-block; font-size: 10px; background: var(--bg); padding: 1px 7px; border-radius: 8px; margin-top: 4px; color: var(--muted); }
@@ -247,5 +248,15 @@ button, .btn, .sendbtn, .dz, .chip, label { touch-action: manipulation; }
   .curbar select, .cb-switch select { font-size: 16px; }
   .pv-scroll { overflow-x: auto; touch-action: pan-x pan-y; }
   .pv-pages { align-items: flex-start; width: max-content; min-width: 100%; }
-  .pv-pages .page { margin: 0 auto; }
+  .pv-pages .pgw { margin: 0 auto; }
 }
+
+/* compact header on phones */
+.top .btn, .top a.btn { white-space: nowrap; }
+@media (max-width: 560px) {
+  .brand span { display: none; }
+  #installBtn { padding: 6px 10px; }
+  .top-actions { gap: 6px; }
+}
+
+.tpl-save { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 4px; }

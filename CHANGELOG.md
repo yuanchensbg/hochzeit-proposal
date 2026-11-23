@@ -2,6 +2,15 @@
 
 Alle Versionen der Hochzeitsangebot-App. Format: `Major.Minor` – Minor bei jedem Update, Major bei großen Umbauten.
 
+## 1.2 – 2026-11-23
+
+- Vorlagen: Angebot mit Design, Paketen, Preisen, Texten und Fotos als Vorlage speichern; neuer Entwurf aus Vorlage
+- Cloud-Zugang wird verschlüsselt mitgeliefert – Kundin gibt pro Gerät einmal das Cloud-Passwort ein
+- Handy-Vorschau: Seiten werden exakt wie im PDF verkleinert (kein Verziehen mehr)
+- Neues Gerät lädt zuerst die Cloud-Angebote statt einen leeren Entwurf anzulegen
+- WhatsApp/Teilen: Teilen-Menü öffnet direkt beim Antippen; falls ein Gerät blockiert, Alternative „PDF speichern & WhatsApp öffnen“
+- Samsung Internet: Installation über Chrome (Play Protect blockiert die Samsung-Installation)
+
 ## 1.1 – 2026-11-23
 
 - Handy: kein Zoomen mehr in der App (verhindert verzogene Ansicht), Eingabefelder ohne Auto-Zoom

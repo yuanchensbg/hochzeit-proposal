@@ -57,7 +57,9 @@
         '<button class="sendbtn" id="sCopy" type="button"><b>E-Mail-HTML kopieren</b><span>Formatierte Mail in Gmail / Outlook einfügen</span></button>' +
         '<button class="sendbtn" id="sMail" type="button"><b>Mail-App öffnen</b><span>Einfacher Text – PDF danach selbst anhängen</span></button>' +
         '<button class="sendbtn hide" id="sShare" type="button"><b>Teilen …</b><span>Teilen-Menü des Handys (Mail, WhatsApp, AirDrop …)</span></button></div>' +
-        '<div id="msgEditor"></div><div class="status" id="sendStatus"></div></div>' +
+        '<div id="msgEditor"></div><div class="status" id="sendStatus"></div>' +
+        '<div class="tpl-save"><h3>Vorlage</h3><p class="hint">Design, Pakete, Preise, Texte, Logo und Fotos dieses Angebots als Vorlage speichern. Namen, Datum, Ort und Kontakt trägst du bei jedem neuen Angebot neu ein.</p>' +
+        '<button class="btn ghost" id="sTpl" type="button">☆ Als Vorlage speichern</button></div></div>' +
       (ADMIN ? '<div class="pane" data-pane="dev" id="devPane"></div>' : '') +
     '</section><section class="preview" id="preview"><div class="pv-bar"><span id="pvInfo"></span><div>' +
       '<button class="btn mini" id="zoomOut" type="button">−</button><button class="btn mini" id="zoomFit" type="button">⤢</button><button class="btn mini" id="zoomIn" type="button">+</button></div></div>' +
@@ -190,7 +192,11 @@
         }, Promise.resolve());
       });
     }).then(function () { syncing = false; drawCurbar(); if (!quiet) UI.toast('Mit der Cloud abgeglichen'); })
-      .catch(function (e) { syncing = false; console.warn(e); if (!quiet) UI.toast('Cloud-Fehler: ' + e.message); });
+      .catch(function (e) {
+        syncing = false; console.warn(e);
+        if (e.status === 401 && !ADMIN && App.cfg.cloudVault) { var s = S.ghSettings(); s.token = ''; S.saveGhSettings(s); S.IDB.del('kv', 'cloudConnect'); App.askVault(true); return; }
+        if (!quiet) UI.toast('Cloud-Fehler: ' + e.message);
+      });
   };
 
   /* ================= STEPS ================= */
@@ -217,7 +223,7 @@
       '<div class="row"><select id="cbStatus">' + STATUS.map(function (s) { return '<option value="' + s.id + '"' + (s.id === pr.status ? ' selected' : '') + '>' + s.name + '</option>'; }).join('') + '</select>' +
       '<button class="btn ghost" id="cbVer" type="button" title="Aktuellen Stand als Version sichern">Version sichern</button></div>';
     $('#cbStatus').onchange = function (e) { App.setStatus(pr, e.target.value); App.save(); };
-    $('#cbNew').onclick = function () { App.save().then(function () { App.newProposal(); UI.toast('Neuer Entwurf angelegt'); }); };
+    $('#cbNew').onclick = function () { App.chooseNew(); };
     S.IDB.all('proposals').then(function (l) {
       var sel = $('#cbPick'); if (!sel) return;
       l.sort(function (a, b) { return b.updated - a.updated; });
@@ -321,7 +327,9 @@
       if (tok !== renderTok) return;
       var html = PP.render(pr, App.rcfg(), ph);
       var pages = $('#pages'), sc = $('#pvScroll'), top = sc.scrollTop;
-      pages.innerHTML = html; fit(pages); applyZoom(); sc.scrollTop = top;
+      pages.innerHTML = html;
+      $$('.page', pages).forEach(function (pg) { var w = document.createElement('div'); w.className = 'pgw'; pg.parentNode.insertBefore(w, pg); w.appendChild(pg); });
+      fit(pages); applyZoom(); sc.scrollTop = top;
       var n = $$('.page', pages).length, d = App.designs().filter(function (x) { return x.id === pr.design; })[0];
       $('#pvInfo').textContent = (d ? d.name : pr.design) + ' · ' + n + ' Seiten · A4';
     });
@@ -396,7 +404,7 @@
     photoMap(pr, 700).then(function (ph) {
       list.forEach(function (d) {
         var t = g.querySelector('[data-id="' + d.id + '"] .thumb'); if (!t) return;
-        var inner = t.firstChild; inner.style.zoom = t.clientWidth ? (t.clientWidth / 794).toFixed(4) : '0.25';
+        var inner = t.firstChild; inner.style.transform = 'scale(' + (t.clientWidth ? (t.clientWidth / 794).toFixed(4) : '0.25') + ')';
         inner.innerHTML = PP.render(Object.assign({}, pr, { design: d.id }), App.rcfg(), ph, { coverOnly: true });
       });
     });
@@ -404,7 +412,7 @@
   // Scale each cover thumbnail to its tile; re-run whenever tiles change size or become visible.
   function sizeThumbs() {
     $$('#gallery .thumb').forEach(function (t) {
-      var w = t.clientWidth; if (w > 0) t.firstChild.style.zoom = (w / 794).toFixed(4);
+      var w = t.clientWidth; if (w > 0) t.firstChild.style.transform = 'scale(' + (w / 794).toFixed(4) + ')';
     });
   }
   if (window.ResizeObserver) new ResizeObserver(sizeThumbs).observe($('#gallery'));
@@ -652,7 +660,7 @@
     }
     $('#mF', box).onchange = function (e) { filter = e.target.value; draw(); };
     $('#mQ', box).oninput = function (e) { q = e.target.value.trim().toLowerCase(); draw(); };
-    $('#mNew', box).onclick = function () { UI.close(); App.newProposal(); };
+    $('#mNew', box).onclick = function () { UI.close(); App.chooseNew(); };
     $('#mClose', box).onclick = UI.close;
     var sy = $('#mSync', box); if (sy) sy.onclick = function () { var b = UI.busy('Abgleich …'); App.syncProposals().then(function () { b.done(); draw(); }); };
     bindCloudInfo(box);
@@ -716,9 +724,11 @@
     if (S.Cloud.enabled()) return '☁ Cloud verbunden (' + esc(S.Cloud.repo()) + ') – Angebote und Fotos sind auf allen Geräten verfügbar. <button class="btn mini" type="button" id="cloudOff">Trennen</button>';
     if (ADMIN) return 'Angebote werden auf diesem Gerät gespeichert. Cloud im Entwickler-Bereich verbinden.';
     return 'Angebote werden auf diesem Gerät gespeichert. <b>Cloud verbinden:</b> Verbindungs-Link öffnen oder hier einfügen:' +
-      '<div class="row"><input id="cloudCode" placeholder="Link oder Code einfügen" style="flex:1"><button class="btn mini" type="button" id="cloudOn">Verbinden</button></div>';
+      '<div class="row"><input id="cloudCode" placeholder="Link oder Code einfügen" style="flex:1"><button class="btn mini" type="button" id="cloudOn">Verbinden</button>' +
+      (App.cfg.cloudVault ? '<button class="btn mini" type="button" id="cloudPw">Mit Passwort verbinden</button>' : '') + '</div>';
   }
   function bindCloudInfo(box) {
+    var pw = $('#cloudPw', box); if (pw) pw.onclick = function () { UI.close(); App.askVault(true); };
     var on = $('#cloudOn', box);
     if (on) on.onclick = function () {
       var v = $('#cloudCode', box).value.trim(), m = v.match(/connect=([^&\s]+)/);
@@ -813,19 +823,45 @@
     return App.buildPdf().then(function (blob) { btn.disabled = false; return fn(blob); })
       .catch(function (e) { btn.disabled = false; btn.innerHTML = old; st.className = 'status err'; st.textContent = 'Fehler: ' + e.message; });
   }
-  // Share needs a fresh user gesture: if the PDF was not ready yet, ask for a second tap.
-  function share(blob, text) {
-    var file = new File([blob], pdfName(App.cur), { type: 'application/pdf' });
-    var go = function () {
-      return navigator.share({ files: [file], text: text, title: App.cur.content.title || 'Hochzeitsangebot' }).then(function () { return true; })
-        .catch(function (e) { if (e.name !== 'AbortError') UI.toast('Teilen nicht möglich: ' + e.message); return false; });
+  // Android/iOS only open the share sheet when navigator.share() runs *directly* inside a tap.
+  // So: never await anything before calling it. If the PDF is not ready, build it and ask for a second tap.
+  function shareFile(blob) {
+    var safe = pdfName(App.cur).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/[^\w.\-]+/g, '_');
+    return new File([blob], safe, { type: 'application/pdf' });
+  }
+  function shareNow(blob, text, channel) {          // must be called synchronously from a click handler
+    var p;
+    try { p = navigator.share({ files: [shareFile(blob)], text: text }); }
+    catch (e) { p = Promise.reject(e); }
+    return p.then(function () { markSent(channel); return true; }).catch(function (e) {
+      if (e && e.name === 'AbortError') return false;   // user closed the share sheet
+      shareFallback(blob, text, channel, e);
+      return false;
+    });
+  }
+  // Share sheet blocked by the device/browser: save the PDF and open WhatsApp with the message.
+  function shareFallback(blob, text, channel, err) {
+    console.warn('share failed', err);
+    var box = UI.modal('<h2>Teilen-Menü nicht verfügbar</h2><p class="hint">Dein Gerät hat das direkte Teilen blockiert' + (err && err.message ? ' (' + esc(err.message) + ')' : '') +
+      '. Alternative: Das PDF wird gespeichert und WhatsApp öffnet sich mit der Nachricht – dort mit 📎 das PDF aus „Downloads“ anhängen.</p>' +
+      '<div class="row"><button class="btn" id="fbGo" type="button">PDF speichern &amp; WhatsApp öffnen</button><button class="btn ghost" id="fbX" type="button">Abbrechen</button></div>');
+    $('#fbGo', box).onclick = function () {
+      UI.close(); downloadBlob(blob, shareFile(blob).name);
+      window.open('https://wa.me/' + (waNumber(App.cur.clientPhone) || '') + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+      $('#sendStatus').textContent = 'PDF gespeichert – in WhatsApp mit 📎 anhängen.'; markSent(channel);
     };
-    return go().catch(function () {
-      return new Promise(function (res) {
-        var box = UI.modal('<h2>PDF ist fertig</h2><p class="hint">Tippe auf „Jetzt teilen“ und wähle WhatsApp (oder eine andere App).</p><div class="row"><button class="btn" id="shNow" type="button">Jetzt teilen</button><button class="btn ghost" id="shX" type="button">Abbrechen</button></div>');
-        $('#shNow', box).onclick = function () { UI.close(); go().then(res); };
-        $('#shX', box).onclick = function () { UI.close(); res(false); };
-      });
+    $('#fbX', box).onclick = UI.close;
+  }
+  function readyPdf() { return pdfCache.blob && pdfCache.key === cacheKey(App.cur) ? pdfCache.blob : null; }
+  function shareFlow(btn, channel) {
+    var text = $('#msgText').value, ready = readyPdf();
+    if (ready) { shareNow(ready, text, channel); return; }      // direct: still inside the tap
+    withPdf(btn, function (b) {
+      var box = UI.modal('<h2>PDF ist fertig</h2><p class="hint">Tippe auf „' + (channel === 'WhatsApp' ? 'An WhatsApp senden' : 'Jetzt teilen') + '“ und wähle ' +
+        (channel === 'WhatsApp' ? 'im Teilen-Menü WhatsApp und dann den Chat.' : 'die App.') + '</p><div class="row"><button class="btn" id="shNow" type="button">' +
+        (channel === 'WhatsApp' ? 'An WhatsApp senden' : 'Jetzt teilen') + '</button><button class="btn ghost" id="shX" type="button">Abbrechen</button></div>');
+      $('#shNow', box).onclick = function () { shareNow(b, text, channel); UI.close(); };
+      $('#shX', box).onclick = UI.close;
     });
   }
   function needsTap() { return !pdfCache.blob || pdfCache.key !== cacheKey(App.cur); }
@@ -837,19 +873,13 @@
     return n;
   }
 
+  $('#sTpl').onclick = function () { App.saveAsTemplate(); };
   $('#sPdf').onclick = function () { withPdf(this, function (b) { downloadBlob(b, pdfName(App.cur)); App.log(App.cur, 'export', 'PDF heruntergeladen'); App.save(); $('#sendStatus').textContent = 'PDF gespeichert.'; }); };
   $('#sWa').onclick = function () {
     var text = $('#msgText').value, btn = this;
     var canShare = navigator.canShare && navigator.canShare({ files: [new File(['x'], 'x.pdf', { type: 'application/pdf' })] });
     if (isMobile() && canShare) {
-      var tap = needsTap();
-      withPdf(btn, function (b) {
-        var run = function () { return share(b, text).then(function (ok) { if (ok) markSent('WhatsApp'); }); };
-        if (!tap) return run();
-        var box = UI.modal('<h2>PDF ist fertig</h2><p class="hint">Tippe auf „An WhatsApp senden“ und wähle im Teilen-Menü WhatsApp und dann den Chat.</p><div class="row"><button class="btn" id="shNow" type="button">An WhatsApp senden</button><button class="btn ghost" id="shX" type="button">Abbrechen</button></div>');
-        $('#shNow', box).onclick = function () { UI.close(); run(); };
-        $('#shX', box).onclick = UI.close;
-      });
+      shareFlow(btn, 'WhatsApp');
     } else {
       withPdf(btn, function (b) {
         downloadBlob(b, pdfName(App.cur));
@@ -860,15 +890,7 @@
       });
     }
   };
-  $('#sShare').onclick = function () {
-    var text = $('#msgText').value, tap = needsTap();
-    withPdf(this, function (b) {
-      if (!tap) return share(b, text).then(function (ok) { if (ok) markSent('Teilen'); });
-      var box = UI.modal('<h2>PDF ist fertig</h2><div class="row"><button class="btn" id="shNow" type="button">Jetzt teilen</button><button class="btn ghost" id="shX" type="button">Abbrechen</button></div>');
-      $('#shNow', box).onclick = function () { UI.close(); share(b, text).then(function (ok) { if (ok) markSent('Teilen'); }); };
-      $('#shX', box).onclick = UI.close;
-    });
-  };
+  $('#sShare').onclick = function () { shareFlow(this, 'Teilen'); };
   $('#sMail').onclick = function () {
     var pr = App.cur;
     location.href = 'mailto:' + encodeURIComponent(pr.clientEmail || '') + '?subject=' + encodeURIComponent($('#mailSubject').value) + '&body=' + encodeURIComponent($('#mailBody').value);
@@ -971,15 +993,20 @@
   var PLUS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
   App.showInstall = function () {
     var ua = navigator.userAgent, ios = isIOS(), inApp = /FBAN|FBAV|Instagram|WhatsApp|Line\//i.test(ua);
+    var samsung = /SamsungBrowser/i.test(ua) && !ios;
+    var chromeUrl = 'intent://' + location.host + location.pathname + '#Intent;scheme=https;package=com.android.chrome;end';
     var steps;
-    if (inApp) steps = '<li>Du hast den Link in einer App (z. B. WhatsApp/Instagram) geöffnet. Tippe oben auf ' + DOTS_ICON + ' bzw. „…“ und wähle <b>' + (ios ? 'In Safari öffnen' : 'Im Browser öffnen') + '</b>.</li><li>Danach erscheint diese Anleitung dort erneut.</li>';
+    if (samsung) steps = '<li><b>Empfohlen:</b> Tippe unten auf <b>„In Chrome öffnen“</b> und installiere die App dort über ' + DOTS_ICON + ' → <b>„App installieren“</b>. ' +
+      '(Die Installation über Samsung Internet wird von Google Play Protect als „unsichere App“ blockiert.)</li>' +
+      '<li><b>Oder hier in Samsung Internet:</b> Menü ☰ unten rechts → <b>„Seite hinzufügen zu“</b> → <b>„Startbildschirm“</b>. Das legt nur ein Symbol an und wird nicht blockiert.</li>';
+    else if (inApp) steps = '<li>Du hast den Link in einer App (z. B. WhatsApp/Instagram) geöffnet. Tippe oben auf ' + DOTS_ICON + ' bzw. „…“ und wähle <b>' + (ios ? 'In Safari öffnen' : 'Im Browser öffnen') + '</b>.</li><li>Danach erscheint diese Anleitung dort erneut.</li>';
     else if (ios) steps = '<li>Tippe auf <b>Teilen</b> ' + SHARE_ICON + ' (Safari: unten in der Mitte · Chrome: oben rechts).</li>' +
       '<li>Scrolle nach unten und wähle <b>„Zum Home-Bildschirm“</b> ' + PLUS_ICON + '.</li><li>Tippe oben rechts auf <b>„Hinzufügen“</b> – fertig! Die App findest du jetzt auf deinem Home-Bildschirm.</li>';
     else if (deferredPrompt) steps = '<li>Tippe unten auf <b>„Jetzt installieren“</b>.</li><li>Bestätige mit <b>„Installieren“</b> – die App erscheint auf deinem Startbildschirm.</li>';
     else steps = '<li>Tippe oben rechts auf das Menü ' + DOTS_ICON + '.</li><li>Wähle <b>„App installieren“</b> oder <b>„Zum Startbildschirm hinzufügen“</b>.</li><li>Bestätige mit <b>„Installieren“</b> bzw. <b>„Hinzufügen“</b>.</li>';
     var box = UI.modal('<div class="install-hero"><img src="assets/icons/icon-192.png" alt=""><h2>Als App speichern</h2>' +
       '<p class="hint">Speichere das Angebots-Studio auf deinem ' + (ios ? 'iPhone' : (isMobile() ? 'Handy' : 'Computer')) + ' – dann öffnet es sich wie eine echte App, im Vollbild und mit einem Tipp.</p></div>' +
-      '<ol class="install-steps">' + steps + '</ol><div class="row">' + (deferredPrompt ? '<button class="btn" id="inGo" type="button">Jetzt installieren</button>' : '') +
+      '<ol class="install-steps">' + steps + '</ol><div class="row">' + (samsung ? '<a class="btn" href="' + chromeUrl + '">In Chrome öffnen</a>' : (deferredPrompt ? '<button class="btn" id="inGo" type="button">Jetzt installieren</button>' : '')) +
       '<button class="btn ghost" id="inLater" type="button">Später</button><button class="btn ghost" id="inNever" type="button">Nicht mehr anzeigen</button></div>', { sticky: true });
     var go = $('#inGo', box);
     if (go) go.onclick = function () { deferredPrompt.prompt(); deferredPrompt.userChoice.then(function () { deferredPrompt = null; UI.close(); }); };
@@ -987,7 +1014,9 @@
     $('#inNever', box).onclick = function () { try { localStorage.setItem('pp_install_never', '1'); } catch (e) { /* ignore */ } UI.close(); };
   };
   window.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault(); deferredPrompt = e; $('#installBtn').classList.remove('hide');
+    e.preventDefault();
+    if (/SamsungBrowser/i.test(navigator.userAgent)) return;   // its WebAPK gets blocked by Play Protect -> guide to Chrome instead
+    deferredPrompt = e; $('#installBtn').classList.remove('hide');
     var go = $('#inGo'); if (!go && $('.install-steps')) App.showInstall();
   });
   window.addEventListener('appinstalled', function () { $('#installBtn').classList.add('hide'); UI.toast('App installiert 🎉'); });
@@ -1019,6 +1048,81 @@
     history.replaceState(null, '', location.pathname + location.search);
     return applyConnect(m[1]);
   }
+  // Encrypted cloud access shipped with the app (config.cloudVault): the client enters the password once per device.
+  App.askVault = function (force) {
+    var v = App.cfg.cloudVault;
+    if (!v || S.Cloud.enabled() || !(window.crypto && crypto.subtle)) return;
+    try { if (!force && sessionStorage.getItem('pp_vault_later')) return; } catch (e) { /* ignore */ }
+    var box = UI.modal('<div class="install-hero"><img src="assets/icons/icon-192.png" alt=""><h2>Cloud verbinden</h2>' +
+      '<p class="hint">Gib einmal das Cloud-Passwort ein – danach sind deine Angebote und Fotos auf Handy und Laptop synchron. Das Passwort bekommst du vom Admin.</p></div>' +
+      '<label>Cloud-Passwort<input type="password" id="vPw" autocomplete="current-password"></label>' +
+      '<div class="row"><button class="btn" id="vGo" type="button">Verbinden</button><button class="btn ghost" id="vLater" type="button">Später</button></div><div class="status" id="vSt"></div>', { sticky: true });
+    function go() {
+      var st = $('#vSt', box); st.className = 'status'; st.textContent = 'Prüfe …';
+      S.Vault.open(v, $('#vPw', box).value).then(function (o) {
+        if (!o || !o.t) throw new Error('leer');
+        var s = S.ghSettings(); s.token = o.t; if (o.d) s.dataRepo = o.d; S.saveGhSettings(s);
+        S.IDB.put('kv', { t: o.t, d: o.d }, 'cloudConnect');
+        UI.close(); UI.toast('☁ Cloud verbunden – Angebote und Fotos werden synchronisiert', 4000);
+        App.syncProposals(true); Photos.sync().catch(function () { /* ignore */ }); App.loadFavs(); App.loadTemplates();
+        App.loadClientDesigns().then(function () { App.setConfig(App.cfg); });
+      }).catch(function () { st.className = 'status err'; st.textContent = 'Falsches Passwort'; });
+    }
+    $('#vGo', box).onclick = go;
+    $('#vPw', box).onkeydown = function (e) { if (e.key === 'Enter') go(); };
+    $('#vLater', box).onclick = function () { try { sessionStorage.setItem('pp_vault_later', '1'); } catch (e) { /* ignore */ } UI.close(); };
+  };
+
+  /* ---------- templates: design, packages, texts, logo, photos – without couple data ---------- */
+  var TPL_PATH = 'templates/templates.json', tplSha = null;
+  App.templates = [];
+  App.loadTemplates = function () {
+    return S.IDB.get('kv', 'templates').then(function (l) {
+      App.templates = l || [];
+      if (!S.Cloud.enabled()) return App.templates;
+      return S.GH.getText(S.Cloud.repo(), TPL_PATH).then(function (r) {
+        if (r) { tplSha = r.sha; try { App.templates = JSON.parse(r.text); S.IDB.put('kv', App.templates, 'templates'); } catch (e) { /* keep local */ } }
+        return App.templates;
+      }).catch(function () { return App.templates; });
+    });
+  };
+  function saveTemplates() {
+    S.IDB.put('kv', App.templates, 'templates');
+    if (S.Cloud.enabled()) S.GH.put(S.Cloud.repo(), TPL_PATH, S.utf8ToB64(JSON.stringify(App.templates, null, 1)), 'Vorlagen aktualisiert', tplSha || undefined)
+      .then(function (r) { tplSha = r.content.sha; }).catch(function (e) { UI.toast('Cloud: ' + e.message); });
+  }
+  App.saveAsTemplate = function () {
+    var pr = App.cur;
+    var name = window.prompt('Name der Vorlage (z. B. „Klassik 2027“ oder „Standesamt kurz“):', (pr.content && pr.content.title ? '' : '') + (App.designs().filter(function (d) { return d.id === pr.design; }).map(function (d) { return d.name; })[0] || 'Vorlage'));
+    if (!name) return;
+    var t = { id: S.uid('t'), name: name, created: Date.now(), design: pr.design, logo: pr.logo || 'auto', style: pr.style || null, content: clone(pr.content), slots: clone(pr.slots) };
+    var same = App.templates.filter(function (x) { return x.name === name; })[0];
+    if (same && UI.confirm('Vorlage „' + name + '“ überschreiben?')) { t.id = same.id; App.templates = App.templates.map(function (x) { return x.id === same.id ? t : x; }); }
+    else App.templates.unshift(t);
+    saveTemplates(); UI.toast('Vorlage „' + name + '“ gespeichert');
+  };
+  App.newFromTemplate = function (t) {
+    var pr = newProposal();
+    if (t) {
+      pr.design = t.design; pr.logo = t.logo; pr.style = t.style ? clone(t.style) : null; pr.content = clone(t.content); pr.slots = clone(t.slots);
+      pr.log = [{ at: Date.now(), type: 'create', text: 'Angelegt aus Vorlage „' + t.name + '“' }];
+    }
+    return S.IDB.put('proposals', pr).then(function () { App.open(pr); setStep('data'); return pr; });
+  };
+  App.chooseNew = function () {
+    if (!App.templates.length) return App.save().then(function () { App.newProposal(); UI.toast('Neuer Entwurf angelegt'); });
+    var box = UI.modal('<h2>Neuer Entwurf</h2><p class="hint">Mit einer Vorlage sind Design, Pakete, Preise, Texte und Fotos schon fertig – du trägst nur noch Paar, Datum und Ort ein.</p>' +
+      '<div class="drafts"><div class="draft"><div><b>Leer (Standardtexte)</b><span>Neues Angebot mit den Standardvorlagen</span></div><div class="row"><button class="btn" type="button" data-t="">Anlegen</button></div></div>' +
+      App.templates.map(function (t, i) {
+        var d = App.designs().filter(function (x) { return x.id === t.design; })[0];
+        var pk = (t.content.packages || []).filter(function (p) { return p.show !== false; }).map(function (p) { return p.name + ' ' + p.price; }).join(' · ');
+        return '<div class="draft"><div><b>' + esc(t.name) + '</b><span>' + esc((d ? d.name : t.design) + (pk ? ' · ' + pk : '')) + '</span></div><div class="row"><button class="btn" type="button" data-t="' + i + '">Anlegen</button><button class="btn ghost" type="button" data-del="' + i + '" title="Vorlage löschen">✕</button></div></div>';
+      }).join('') + '</div><div class="row"><button class="btn ghost" type="button" id="tplX">Abbrechen</button></div>', { wide: true });
+    $('#tplX', box).onclick = UI.close;
+    $$('[data-t]', box).forEach(function (b) { b.onclick = function () { var t = b.dataset.t === '' ? null : App.templates[+b.dataset.t]; UI.close(); App.save().then(function () { App.newFromTemplate(t); UI.toast(t ? 'Aus Vorlage „' + t.name + '“ angelegt' : 'Neuer Entwurf angelegt'); }); }; });
+    $$('[data-del]', box).forEach(function (b) { b.onclick = function () { var t = App.templates[+b.dataset.del]; if (!UI.confirm('Vorlage „' + t.name + '“ löschen?')) return; App.templates.splice(+b.dataset.del, 1); saveTemplates(); UI.close(); App.chooseNew(); }; });
+  };
+
   // If localStorage was cleared but IndexedDB still has the connection, restore it.
   function restoreConnect() {
     if (S.Cloud.enabled()) return Promise.resolve();
@@ -1034,14 +1138,27 @@
     Photos.onChange = function () { renderSlots(); };
     var last = null; try { last = localStorage.getItem('pp_last'); } catch (e) { /* ignore */ }
     restoreConnect().then(function () { return App.loadClientDesigns(); }).catch(function () { return []; }).then(function () { applyCss(); return PP.prepare(App.rcfg()); }).then(function () { return S.IDB.all('proposals'); }).then(function (l) {
-      var pr = l.filter(function (p) { return p.id === last; })[0] || l.sort(function (a, b) { return b.updated - a.updated; })[0];
+      var pick = function (list) { return list.filter(function (p) { return p.id === last; })[0] || list.sort(function (a, b) { return b.updated - a.updated; })[0]; };
+      var pr = pick(l);
       if (pr) { App.open(pr); return; }
-      var n = newProposal(); return S.IDB.put('proposals', n).then(function () { App.open(n); });
+      // fresh device: fetch the cloud first, create an empty draft only if there is nothing
+      var first = S.Cloud.enabled() ? App.syncProposals(true).then(function () { return S.IDB.all('proposals'); }) : Promise.resolve([]);
+      return first.then(function (l2) {
+        var p2 = pick(l2 || []);
+        if (p2) { App.open(p2); return; }
+        var n = newProposal(); return S.IDB.put('proposals', n).then(function () { App.open(n); });
+      });
     }).then(function () {
       var st = null; try { st = sessionStorage.getItem('pp_step'); } catch (e) { /* ignore */ }
       setStep(st && $('[data-pane="' + st + '"], [data-step="' + st + '"]') ? st : 'design');
+      App.loadTemplates();
       if (S.Cloud.enabled()) { App.syncProposals(true); App.loadFavs(); Photos.sync().catch(function (e) { console.warn(e); }); }
       maybeAskInstall();
+      // ask for the cloud password as soon as no other dialog (e.g. the install guide) is open
+      if (!ADMIN) (function tryVault(n) {
+        if (S.Cloud.enabled() || !App.cfg.cloudVault) return;
+        if (n > 0 && $('#modal').classList.contains('hide')) App.askVault(); else if (n < 200) setTimeout(function () { tryVault(n + 1); }, 1200);
+      })(0);
       if (App.onReady) App.onReady();
     }).catch(function (e) {
       console.error(e);
@@ -1055,7 +1172,7 @@
     if (!S.Cloud.enabled() || document.hidden) return;
     App.syncProposals(true);
     Photos.sync().catch(function () { /* offline */ });
-    App.loadFavs();
+    App.loadFavs(); App.loadTemplates();
     App.loadClientDesigns().then(function () { applyCss(); renderGallery(); }).catch(function () { /* offline */ });
   }
   document.addEventListener('visibilitychange', function () { if (!document.hidden) cloudRefresh(); });

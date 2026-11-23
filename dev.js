@@ -343,9 +343,25 @@
       '<ol class="install-steps"><li>Auf github.com einen eigenen <b>Fine-grained Token</b> nur für das Daten-Repo erstellen (Contents: Read and write).</li><li>Token unten einfügen und Link erzeugen.</li><li>Link per WhatsApp an sie schicken – einmal öffnen, fertig.</li></ol>' +
       '<label>Token nur für das Daten-Repo<input type="password" id="cnTok" placeholder="github_pat_…" autocomplete="off"></label>' +
       '<div class="row"><button class="btn" id="cnGo" type="button">Verbindungs-Link erzeugen</button></div><textarea class="code" id="cnOut" rows="3" readonly></textarea>' +
-      '<p class="hint">Link zur Kunden-App ohne Cloud: <a id="cnSite" target="_blank" rel="noopener"></a></p>';
+      '<p class="hint">Link zur Kunden-App ohne Cloud: <a id="cnSite" target="_blank" rel="noopener"></a></p>' +
+      '<h3>Automatisch mitliefern (verschlüsselt)</h3><p class="hint">Der Token wird mit einem Passwort verschlüsselt in der App hinterlegt und bei jedem Update mitgeliefert. ' +
+      'Deine Kollegin gibt auf jedem Gerät einmal das Passwort ein. Im öffentlichen Code steht nur der verschlüsselte Text. Wähle ein langes Passwort (mind. 10 Zeichen).</p>' +
+      '<label>Cloud-Passwort für die Kundin<input type="password" id="vlPw" autocomplete="new-password"></label>' +
+      '<div class="row"><button class="btn" id="vlGo" type="button">Verschlüsselt hinterlegen</button><button class="btn danger" id="vlDel" type="button">Entfernen</button></div><div class="status" id="vlSt"></div>';
   }
   function bindConnect(pane) {
+    var vst = $('#vlSt', pane);
+    vst.textContent = App.cfg.cloudVault ? '✓ Verschlüsselter Zugang ist hinterlegt' + (load(LOCAL) ? ' (wird mit der nächsten Version veröffentlicht)' : '.') : 'Noch kein Zugang hinterlegt.';
+    $('#vlGo', pane).onclick = function () {
+      var t = $('#cnTok', pane).value.trim() || S.ghSettings().token, pw = $('#vlPw', pane).value;
+      if (!t) { vst.className = 'status err'; vst.textContent = 'Bitte oben den Token einfügen.'; return; }
+      if (pw.length < 10) { vst.className = 'status err'; vst.textContent = 'Passwort bitte mindestens 10 Zeichen.'; return; }
+      S.Vault.seal({ t: t, d: S.ghSettings().dataRepo }, pw).then(function (v) {
+        App.cfg.cloudVault = v; changed(); $('#vlPw', pane).value = '';
+        vst.className = 'status ok'; vst.textContent = '✓ Hinterlegt – jetzt veröffentlichen. Danach fragt die Kunden-App einmal nach dem Passwort.';
+      }).catch(function (e) { vst.className = 'status err'; vst.textContent = e.message; });
+    };
+    $('#vlDel', pane).onclick = function () { delete App.cfg.cloudVault; changed(); vst.className = 'status'; vst.textContent = 'Entfernt – jetzt veröffentlichen.'; };
     var a = $('#cnSite', pane); a.href = siteUrl(); a.textContent = siteUrl();
     $('#cnGo', pane).onclick = function () {
       var t = $('#cnTok', pane).value.trim(); if (!t) { UI.toast('Bitte Token einfügen'); return; }

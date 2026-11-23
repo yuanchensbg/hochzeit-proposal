@@ -233,5 +233,28 @@
     }
   };
 
-  window.Store = { IDB: IDB, GH: GH, Cloud: Cloud, uid: uid, utf8ToB64: utf8ToB64, b64ToUtf8: b64ToUtf8, blobToB64: blobToB64, ghSettings: ghSettings, saveGhSettings: saveGhSettings };
+  /* ---------------- Vault: token encrypted with a password (PBKDF2 + AES-GCM) ---------------- */
+  function b64(buf) { var b = new Uint8Array(buf), s = ''; for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+  function unb64(str) { var s = atob(str), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
+  function vaultKey(pw, salt) {
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']).then(function (k) {
+      return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: 200000, hash: 'SHA-256' }, k, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+    });
+  }
+  var Vault = {
+    seal: function (data, pw) {
+      var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+      return vaultKey(pw, salt).then(function (key) {
+        return crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(JSON.stringify(data)));
+      }).then(function (ct) { return { v: 1, salt: b64(salt), iv: b64(iv), ct: b64(ct) }; });
+    },
+    open: function (vault, pw) {
+      return vaultKey(pw, unb64(vault.salt)).then(function (key) {
+        return crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(vault.iv) }, key, unb64(vault.ct));
+      }).then(function (pt) { return JSON.parse(new TextDecoder().decode(pt)); });
+    }
+  };
+
+  window.Store = { Vault: Vault,  IDB: IDB, GH: GH, Cloud: Cloud, uid: uid, utf8ToB64: utf8ToB64, b64ToUtf8: b64ToUtf8, blobToB64: blobToB64, ghSettings: ghSettings, saveGhSettings: saveGhSettings };
 })();

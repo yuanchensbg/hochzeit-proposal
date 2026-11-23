@@ -26,7 +26,7 @@ Alle Änderungen im Tab **„Entwickler“** wirken sofort in der Vorschau und w
 | Nachrichten-Vorlagen | Standardtexte für WhatsApp, E-Mail-Betreff und -Text |
 | Logo | Komplettlogo, Monogramm, Schriftzug als SVG ersetzen (einfarbig; Farbe wird je Design gesetzt) |
 | Rechte der Kundin | Logo wählen · Farben/Schriften pro Angebot · eigene Designs anlegen. Designs der Kundin ansehen und als offizielles Design übernehmen. |
-| Kollegin verbinden | Verbindungs-Link für die Cloud erzeugen (siehe CLOUD-UND-SICHERHEIT.md) |
+| Kollegin verbinden | Cloud-Zugang **verschlüsselt mitliefern** (Token + Cloud-Passwort) oder Verbindungs-Link erzeugen (siehe CLOUD-UND-SICHERHEIT.md) |
 | Datei-Editor | Jede Datei im App-Repo laden, bearbeiten und als neue Version committen (Code-Updates direkt aus der App) |
 | Sicherheit & Backup | PIN ändern, Konfiguration exportieren/importieren |
 

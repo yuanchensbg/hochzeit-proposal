@@ -38,14 +38,17 @@ Ladereihenfolge: `logos.js` → `config.js` → `designs.js` → `store.js` → 
 **Foto** (IndexedDB `photos`, Cloud `photos/<id>.jpg` + `.json`): `{ id, name, added, w, h, fav, tags, blob (≤2400 px JPEG), thumb, cloud, cloudSha }`.
 Bearbeitungen werden nicht ins Foto geschrieben, sondern pro Angebot im Slot gespeichert und beim Rendern angewendet.
 
-**Config** (`config.js`): `appVersion, changelog, studio, pinHash, defaultDesign, customDesigns, clientPermissions, designs{id:{enabled,paper,ink,accent,script,serif,css}}, defaults, textIdeas, messages, github`.
+**Config** (`config.js`): `appVersion, changelog, studio, pinHash, defaultDesign, customDesigns, cloudVault {v,salt,iv,ct}, clientPermissions, designs{id:{enabled,paper,ink,accent,script,serif,css}}, defaults, textIdeas, messages, github`.
+
+**Vorlagen** (IndexedDB `kv/templates`, Cloud `templates/templates.json`): `[{ id, name, created, design, logo, style, content, slots }]` – ohne Paar-, Datums- und Kontaktdaten.
+**Cloud-Dateien** im Daten-Repo: `proposals/`, `photos/`, `templates/templates.json`, `designs/client-designs.json`, `designs/favorites.json`.
 
 ## Rendering & PDF
 
 - `PP.render` liefert `<div class="pp d-<id>">` mit `.page`-Elementen. Innenseiten haben `.pc` (Inhalt), das `App.fit()` verkleinert (Schrift in `em`), bis nichts überläuft; Paketkarten werden zusätzlich so skaliert, dass kein Wort umbricht.
 - PDF: Seiten werden unskaliert in `#exportRoot` gerendert, mit html2canvas (Faktor 2) gerastert und mit jsPDF als A4 zusammengesetzt.
 - html2canvas zeichnet keine SVG-`<img>` zuverlässig und ignoriert `filter`/`mix-blend-mode`/`clip-path` → Logos und Ranken werden über `PP.prepare(cfg, extraColors)` vorab als PNG gerastert; Formen nur mit `border-radius`.
-- Vorschau: `zoom` auf `.page` (`--z`); Galerie-Thumbnails per `ResizeObserver` skaliert.
+- Vorschau: jede `.page` steckt in `.pgw` und wird per `transform: scale(var(--z))` verkleinert (Layout bleibt 794 px breit, identisch zum PDF); Pinch-Zoom setzt `--z`. Galerie-Thumbnails per `ResizeObserver` + `transform` skaliert.
 
 ## Eigene Designs
 

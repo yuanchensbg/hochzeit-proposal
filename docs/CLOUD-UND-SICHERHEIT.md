@@ -25,6 +25,14 @@ und würde Zugriff auf die privaten Kundendaten geben. GitHub erkennt solche Tok
 
 ## Geräte verbinden
 
+**Empfohlen – verschlüsselt mitliefern:** Admin-App → *Kollegin verbinden* → Token einfügen → Cloud-Passwort (mind. 10 Zeichen) →
+„Verschlüsselt hinterlegen“ → veröffentlichen. Der Token steht dann als AES-256-GCM-verschlüsselter Text (`cloudVault`, Schlüssel per PBKDF2-SHA256, 200 000 Runden)
+in `config.js` und wird bei **jedem Update automatisch mitgeliefert**. Die Kundin gibt auf jedem Gerät **einmal** das Passwort ein.
+Ohne Passwort ist der Text wertlos; GitHub erkennt ihn nicht als Token. Läuft der Token ab oder wird er gesperrt, fragt die App automatisch erneut nach dem Passwort –
+neuen Token mit demselben oder neuem Passwort hinterlegen und veröffentlichen.
+
+**Alternative – Verbindungs-Link:**
+
 1. Admin-App → *Kollegin verbinden* → Kunden-Token einfügen → „Verbindungs-Link erzeugen“ (wird kopiert).
 2. Link nur an die Kollegin schicken, auf **jedem** Gerät einmal öffnen (Handy **und** Laptop).
 3. Installierte iPhone-App: Link/Code in der App unter „Angebote“ einfügen.

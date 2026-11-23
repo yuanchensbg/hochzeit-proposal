@@ -9,6 +9,7 @@ Beim ersten Öffnen am Handy erscheint automatisch die Anleitung **„Als App sp
 **iPhone (Safari):** Teilen-Symbol (□↑) unten → „Zum Home-Bildschirm“ → „Hinzufügen“.
 **iPhone (Chrome):** Teilen-Symbol oben rechts → „Zum Home-Bildschirm“.
 **Android (Chrome):** Button „Jetzt installieren“ oder Menü ⋮ → „App installieren“.
+**Samsung Internet:** bitte „In Chrome öffnen“ und dort installieren – die Installation über Samsung Internet blockiert Google Play Protect („Unsichere App blockiert“). Alternativ in Samsung Internet: Menü ☰ → „Seite hinzufügen zu“ → „Startbildschirm“.
 **PC (Chrome/Edge):** Symbol „App installieren“ rechts in der Adressleiste oder Button „App installieren“ oben.
 
 Wurde der Link in WhatsApp/Instagram geöffnet: zuerst „Im Browser öffnen“ wählen.
@@ -17,8 +18,11 @@ Wurde der Link in WhatsApp/Instagram geöffnet: zuerst „Im Browser öffnen“ 
 
 Damit Angebote und Fotos auf **allen Geräten** gleich sind, jedes Gerät **einmal** verbinden:
 
-1. Den Verbindungs-Link (vom Admin) auf dem Gerät öffnen – fertig.
-2. Bei der **installierten iPhone-App** (eigener Speicher): App öffnen → „Angebote“ → unten den Link/Code einfügen → „Verbinden“.
+1. App öffnen – nach „Als App speichern“ erscheint **„Cloud verbinden“** → **Cloud-Passwort** eingeben (bekommst du vom Admin) → fertig.
+2. Später verbinden: „Angebote“ → unten „Mit Passwort verbinden“.
+3. Alternativ: Verbindungs-Link (vom Admin) öffnen oder unter „Angebote“ einfügen.
+
+Bei der **installierten iPhone-App** (eigener Speicher) das Passwort einmal in der installierten App eingeben.
 
 Die Verbindung bleibt bei allen App-Updates erhalten. Nur wenn die Browserdaten gelöscht werden, muss neu verbunden werden.
 
@@ -27,7 +31,11 @@ In der Angebotsleiste steht „☁ synchron“ oder „☁ ausstehend“.
 
 ## 3. Ein Angebot erstellen
 
-Oben in der Angebotsleiste: **Auswahlliste** = zwischen Entwürfen wechseln, **„+ Neuer Entwurf“** = neues Angebot.
+Oben in der Angebotsleiste: **Auswahlliste** = zwischen Entwürfen wechseln, **„+ Neuer Entwurf“** = neues Angebot – leer oder aus einer **Vorlage**.
+
+**Vorlagen:** Unter *Senden* → „☆ Als Vorlage speichern“ werden Design, Logo, Farben, Pakete, Preise, alle Texte und die Fotos gespeichert.
+Ein neuer Entwurf aus der Vorlage hat alles fertig – nur Namen, Datum, Ort und Kontakt werden jedes Mal neu eingetragen.
+Gleicher Name = Vorlage überschreiben, ✕ im Auswahlfenster = löschen. Vorlagen werden über die Cloud auf allen Geräten geteilt.
 
 | Schritt | Was passiert |
 |---|---|
@@ -55,7 +63,7 @@ Button **„Fotos“** oben. Fotos einmal hochladen (Handy: Galerie, PC: beliebi
 
 | Button | Ergebnis |
 |---|---|
-| Per WhatsApp senden | Handy: PDF über das Teilen-Menü direkt an WhatsApp. PC: PDF wird gespeichert, WhatsApp Web öffnet sich mit der Nachricht → PDF anhängen. |
+| Per WhatsApp senden | Handy: PDF über das Teilen-Menü direkt an WhatsApp (ist das PDF noch nicht fertig, einmal „An WhatsApp senden“ antippen; blockiert das Gerät das Teilen, „PDF speichern & WhatsApp öffnen“). PC: PDF wird gespeichert, WhatsApp Web öffnet sich mit der Nachricht → PDF anhängen. |
 | E-Mail-Entwurf (.eml) | Datei öffnen → Outlook/Apple Mail zeigt die fertige HTML-Mail mit PDF-Anhang → Senden. |
 | PDF herunterladen | PDF zum Speichern/Drucken. |
 | E-Mail-HTML kopieren | Formatierte Mail in Gmail/Outlook einfügen, PDF selbst anhängen. |

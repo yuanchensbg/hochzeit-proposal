@@ -1,6 +1,7 @@
 window.APP_CONFIG = {
-  "appVersion": "1.1",
+  "appVersion": "1.2",
   "changelog": [
+    { "version": "1.2", "date": "2026-11-23", "notes": ["Vorlagen: Angebot mit Design, Paketen, Preisen, Texten und Fotos als Vorlage speichern; neuer Entwurf aus Vorlage", "Cloud-Zugang wird verschlüsselt mitgeliefert – Kundin gibt pro Gerät einmal das Cloud-Passwort ein", "Handy-Vorschau: Seiten werden exakt wie im PDF verkleinert (kein Verziehen mehr)", "Neues Gerät lädt zuerst die Cloud-Angebote statt einen leeren Entwurf anzulegen", "WhatsApp/Teilen: Teilen-Menü öffnet direkt beim Antippen; falls ein Gerät blockiert, Alternative „PDF speichern & WhatsApp öffnen“", "Samsung Internet: Installation über Chrome (Play Protect blockiert die Samsung-Installation)"] },
     { "version": "1.1", "date": "2026-11-23", "notes": ["Handy: kein Zoomen mehr in der App (verhindert verzogene Ansicht), Eingabefelder ohne Auto-Zoom", "Vorschau: mit zwei Fingern zoomen"] },
     { "version": "1.0", "date": "2026-11-23", "notes": ["Erste Version: 15 Designs (5 mehrseitig, 10 zweiseitig)", "Foto-Datenbank mit Cloud, Filtern, Zuschneiden und Drehen", "Angebots-Verwaltung mit Status, Verlauf und Versionen", "Versand als PDF, per WhatsApp und als HTML-E-Mail", "Textvorschläge, Lieblingsdesigns, Logo-Auswahl", "Admin-App mit Design-Studio (KI-Prompt), Rechten und Veröffentlichen", "Installierbar als App auf iPhone und Android"] }
   ],
@@ -18,6 +19,7 @@ window.APP_CONFIG = {
   "pinHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
   "defaultDesign": "classic",
   "customDesigns": [],
+  "cloudVault": {"v":1,"salt":"GPOcAUmb953yXJcFAY4gqQ==","iv":"GEMh0C/AT3rFU35/","ct":"29mB2PpIAcUold8c+xRAJr5ziU3OpGjUgEwSVgLTcDJ3zWj9/Oa3soIzJ9pwFLY1W4bmf7OUnhP4zHP4DArhT8TnRoR+uMo0i5QIOpGG8HL8vR7uD+3Zt3Ptdkax8oLtzP4kXMW60HWGfOTI8MYyHvWB58Qu+Uww9hM1HLBl9K6TpVx1G/vwG2A6AlvSv/Si8dZigl/6nCBM3THE9OE="},
   "clientPermissions": { "chooseLogo": true, "editDesign": false, "createDesigns": false },
   "designs": {
     "classic":  { "enabled": true, "paper": "#ffffff", "ink": "#1c1a19", "accent": "#8a7f76", "script": "Mrs Saint Delafield", "serif": "The Seasons" },
