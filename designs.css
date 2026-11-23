@@ -1,0 +1,332 @@
+/* Proposal page styles. A page is 794 x 1123 px (A4 @ 96 dpi). Inner content uses em so the auto-fit can scale it. */
+@font-face { font-family: 'The Seasons'; src: url('assets/fonts/TheSeasons-Light.ttf') format('truetype'); font-weight: 300 400; font-display: swap; }
+@font-face { font-family: 'Montserrat Light'; src: url('assets/fonts/Montserrat-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+
+.pp { --sans: 'Montserrat Light', 'Montserrat', 'Helvetica Neue', Arial, sans-serif; }
+.pp .page {
+  width: 794px; height: 1123px; position: relative; overflow: hidden; box-sizing: border-box;
+  background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300;
+  font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+.pp .page * { box-sizing: border-box; }
+.pp p { margin: 0 0 .8em; }
+.pp .lg { display: block; }
+.pp .ph { background-color: #e9e4df; background-size: cover; background-repeat: no-repeat; }
+.pp .ph-empty { background-image: linear-gradient(160deg, #ece7e2 0%, #d9d1ca 100%); }
+.pp .cv { position: absolute; inset: 0; }
+
+/* ---------- inner page skeleton ---------- */
+.pp .inner { padding: 64px 78px 54px; display: flex; flex-direction: column; }
+.pp .hd { height: 56px; display: flex; justify-content: center; align-items: flex-start; flex: none; }
+.pp .hd-logo { height: 44px; width: auto; }
+.pp .pc { flex: 1; min-height: 0; overflow: hidden; padding-top: 18px; display: flex; flex-direction: column; }
+.pp .pcw { margin: auto 0; width: 100%; }
+.pp .ft { flex: none; display: flex; justify-content: space-between; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); padding-top: 14px; }
+
+.pp .sh { display: flex; align-items: baseline; gap: .7em; margin: 1.4em 0 .7em; }
+.pp .sh:first-child { margin-top: 0; }
+.pp .sh h2 { margin: 0; font-weight: 400; font-family: var(--serif); font-size: 2em; line-height: 1.15; letter-spacing: .04em; }
+.pp .sh-num { display: none; }
+.pp .lead { color: var(--ink); opacity: .9; }
+.pp .intro { font-size: 1.02em; margin-bottom: 1.6em; }
+.pp .intro p:first-child { font-family: var(--serif); font-size: 1.35em; }
+
+.pp .ls { list-style: none; padding: 0; margin: 0; }
+.pp .ls li { position: relative; padding: .28em 0 .28em 1.3em; }
+.pp .ls li::before { content: ''; position: absolute; left: 0; top: 1.05em; width: .55em; height: 1px; background: var(--accent); }
+
+.pp .about { display: flex; gap: 2.4em; align-items: flex-start; }
+.pp .about-photo { flex: none; width: 19em; height: 26em; }
+.pp .about-txt { flex: 1; }
+.pp .sig { font-family: var(--script); font-size: 3em; line-height: 1; margin-top: .2em; color: var(--ink); }
+
+.pp .pks { display: grid; gap: 1.1em; margin-top: 1.4em; }
+.pp .pks, .pp .two { grid-auto-columns: minmax(0, 1fr); }
+.pp .pk, .pp .two > div { min-width: 0; }
+.pp .pk { position: relative; border: 1px solid rgba(0,0,0,.14); padding: 1.8em 1.05em 1.5em; text-align: center; background: rgba(255,255,255,.35); }
+.pp .pk-feat { border-color: var(--accent); border-width: 1.5px; }
+.pp .pk-badge { display: inline-block; vertical-align: top; height: 2em; line-height: 2em; margin: 0 0 1.1em; padding: 0 1.1em; background: var(--accent); color: #fff; font-size: .64em; letter-spacing: .24em; text-transform: uppercase; white-space: nowrap; border-radius: 1em; }
+.pp .pk-badge.ph { visibility: hidden; }
+.pp .pk-name { font-family: var(--serif); font-size: 1.22em; letter-spacing: .05em; text-transform: uppercase; line-height: 1.25; }
+.pp .pk-hours { font-size: .78em; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin: .3em 0 .8em; }
+.pp .pk-price { font-family: var(--serif); font-size: 2.1em; line-height: 1.1; margin-bottom: .8em; }
+.pp .pk .ls { text-align: left; font-size: .82em; line-height: 1.5; border-top: 1px solid rgba(0,0,0,.1); padding-top: .7em; }
+
+.pp .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.6em; }
+.pp .tl { margin-top: .4em; }
+.pp .tl-row { display: flex; align-items: center; gap: 1.1em; padding: .55em 0; border-bottom: 1px solid rgba(0,0,0,.08); }
+.pp .tl-time { width: 4.2em; flex: none; font-family: var(--serif); font-size: 1.15em; }
+.pp .tl-dot { width: .5em; height: .5em; border-radius: 50%; background: var(--accent); flex: none; }
+.pp .tl-label { flex: 1; }
+
+.pp .valid { font-size: .82em; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: .4em 0 1.4em; }
+.pp .gal { display: flex; gap: .8em; margin: .6em 0 1.6em; }
+.pp .gal-ph { flex: 1; height: 13em; }
+.pp .thx { text-align: center; margin: 1em 0 1.4em; }
+.pp .thx-title { font-family: var(--script); font-size: 4.6em; line-height: 1.1; margin-bottom: .15em; }
+.pp .contact { display: grid; grid-template-columns: repeat(2, max-content); justify-content: center; gap: .9em 2.6em; font-size: .86em; border-top: 1px solid rgba(0,0,0,.12); padding-top: 1.2em; }
+.pp .contact b { display: block; font-weight: 400; font-size: .78em; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+.pp .end-logo { width: 9em; margin: 1.8em auto 0; }
+.pp .sprig { position: absolute; width: 250px; height: 250px; opacity: .9; }
+
+/* ======================= 1 CLASSIC SCRIPT ======================= */
+.d-classic .cv { text-align: center; }
+.d-classic .cv-title { position: absolute; top: 46px; left: 0; right: 0; margin: 0; font-family: var(--script); font-weight: 400; font-size: 96px; line-height: 1.3; }
+.d-classic .cv-frame { position: absolute; top: 205px; left: 137px; width: 520px; height: 640px; }
+.d-classic .cv-photo { width: 100%; height: 100%; }
+.d-classic .cv-namebox { position: absolute; top: 868px; left: 40px; right: 40px; }
+.d-classic .cv-names { font-family: var(--serif); font-size: 26px; line-height: 1.3; letter-spacing: .2em; text-transform: uppercase; }
+.d-classic .long .cv-names { font-size: 20px; letter-spacing: .14em; }
+.d-classic .cv-meta { margin-top: 12px; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); }
+.d-classic .cv-logo { position: absolute; left: 0; right: 0; margin: 0 auto; width: 170px; top: 966px; }
+.d-classic .sh { justify-content: center; }
+.d-classic .sh h2 { font-family: var(--script); font-size: 3.2em; letter-spacing: 0; }
+.d-classic .p-packages .lead, .d-classic .valid { text-align: center; }
+.d-classic .tl { max-width: 30em; margin: 0 auto; }
+.d-classic .about .sh { justify-content: flex-start; }
+
+/* ======================= 2 EDITORIAL ======================= */
+.d-editorial .cv-kicker { position: absolute; top: 74px; left: 64px; font-size: 15px; letter-spacing: .4em; text-transform: uppercase; }
+.d-editorial .cv-title { position: absolute; top: 96px; left: 62px; margin: 0; font-family: var(--serif); font-weight: 400; font-size: 40px; letter-spacing: .16em; text-transform: uppercase; }
+.d-editorial .cv-seal { position: absolute; top: 62px; right: 64px; width: 92px; height: 92px; border: 1px solid var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.d-editorial .cv-seal .lg { height: 58px; width: auto; }
+.d-editorial .cv-photo { position: absolute; top: 200px; left: 64px; width: 666px; height: 640px; }
+.d-editorial .cv-cols { position: absolute; top: 884px; left: 64px; right: 64px; display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 24px; font-size: 11px; line-height: 1.7; }
+.d-editorial .cv-cols b { display: block; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 9.5px; letter-spacing: .25em; text-transform: uppercase; margin-bottom: 6px; }
+.d-editorial .cv-cols span { display: block; color: #6d6862; }
+.d-editorial .hd { justify-content: flex-end; }
+.d-editorial .hd-logo { height: 40px; }
+.d-editorial .pc { padding-left: 4.2em; }
+.d-editorial .sh { margin: 1.6em 0 .5em; }
+.d-editorial .sh h2 { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: .72em; letter-spacing: .28em; text-transform: uppercase; }
+.d-editorial .intro p:first-child { font-size: 1.15em; letter-spacing: .02em; }
+.d-editorial .pc p, .d-editorial .ls { color: #5f5a55; }
+.d-editorial .pk { text-align: left; background: transparent; border: 0; border-top: 1px solid var(--ink); padding: 1.1em 0 0; }
+.d-editorial .pk-badge { border-radius: 0; background: var(--ink); }
+.d-editorial .pk-name { font-size: 1.05em; letter-spacing: .12em; }
+.d-editorial .pk-price { font-size: 1.6em; }
+.d-editorial .pk .ls { border-top: 0; padding-top: 0; }
+.d-editorial .thx { text-align: left; }
+.d-editorial .thx-title { font-size: 4em; }
+.d-editorial .about-photo { width: 15em; height: 20em; }
+
+/* ======================= 3 FINE ART SAND ======================= */
+.d-fineart .cv { text-align: center; }
+.d-fineart .cv-mark { position: absolute; top: 52px; left: 367px; height: 62px; width: auto; }
+.d-fineart .cv-title { position: absolute; top: 138px; left: 0; right: 0; margin: 0; font-family: var(--serif); font-weight: 400; font-size: 34px; letter-spacing: .3em; text-transform: uppercase; }
+.d-fineart .cv-rule { position: absolute; top: 200px; left: 337px; width: 120px; height: 1px; background: var(--accent); }
+.d-fineart .cv-photo { position: absolute; top: 236px; left: 147px; width: 500px; height: 610px; border-radius: 250px 250px 0 0; }
+.d-fineart .cv-namebox { position: absolute; top: 860px; left: 60px; right: 60px; }
+.d-fineart .cv-names { font-family: var(--serif); font-size: 40px; line-height: 1.2; letter-spacing: .08em; }
+.d-fineart .long .cv-names { font-size: 30px; }
+.d-fineart .cv-names i { font-family: var(--script); font-style: normal; color: var(--accent); font-size: 1.3em; padding: 0 .1em; }
+.d-fineart .cv-meta { margin-top: 14px; font-size: 12px; letter-spacing: .34em; text-transform: uppercase; }
+.d-fineart .cv-meta2 { margin-top: 6px; font-size: 12px; letter-spacing: .2em; color: var(--accent); }
+.d-fineart .cv-logo { position: absolute; top: 1032px; left: 0; right: 0; margin: 0 auto; width: 250px; }
+.d-fineart .page::after { content: ''; position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1px solid var(--accent); opacity: .55; pointer-events: none; }
+.d-fineart .two .sh::before, .d-fineart .two .sh::after { display: none; }
+.d-fineart .two .sh { justify-content: flex-start; }
+.d-fineart .two .sh h2 { font-size: 1.25em; letter-spacing: .22em; }
+.d-fineart .sh { justify-content: center; text-align: center; }
+.d-fineart .sh h2 { font-size: 1.6em; letter-spacing: .3em; text-transform: uppercase; }
+.d-fineart .sh::before, .d-fineart .sh::after { content: ''; width: 2.6em; height: 1px; background: var(--accent); align-self: center; }
+.d-fineart .about-photo { border-radius: 8.5em 8.5em 0 0; }
+.d-fineart .about .sh { justify-content: flex-start; }
+.d-fineart .about .sh::before { display: none; }
+.d-fineart .pk { background: rgba(255,255,255,.4); border-color: rgba(176,154,124,.5); border-radius: 6em 6em 0 0; padding-top: 2.4em; }
+
+.d-fineart .p-packages .lead, .d-fineart .valid { text-align: center; }
+.d-fineart .gal-ph { border-radius: 5.5em 5.5em 0 0; }
+
+/* ======================= 4 MODERN MINIMAL ======================= */
+.d-modern .cover .cv-photo { position: absolute; inset: 0; background-color: #3a3a3a; }
+.d-modern .cover .ph-empty { background-image: linear-gradient(160deg, #6b6b6b 0%, #2b2b2b 100%); }
+.d-modern .cv-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 48%, rgba(0,0,0,.66) 100%); }
+.d-modern .cv-mark { position: absolute; top: 56px; left: 64px; height: 64px; width: auto; }
+.d-modern .cv-word { position: absolute; top: 76px; right: 64px; width: 190px; }
+.d-modern .cv-text { position: absolute; left: 64px; right: 64px; bottom: 82px; color: #fff; }
+.d-modern .cv-kicker { font-size: 13px; letter-spacing: .5em; text-transform: uppercase; margin-bottom: 18px; }
+.d-modern .cv-names { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 72px; line-height: 1.05; letter-spacing: .02em; }
+.d-modern .cv-line { width: 80px; height: 2px; background: #fff; margin: 28px 0 18px; }
+.d-modern .cv-meta { font-size: 13px; letter-spacing: .3em; text-transform: uppercase; }
+.d-modern .inner { padding: 60px 70px 50px; }
+.d-modern .hd { justify-content: space-between; border-bottom: 2px solid var(--ink); height: 48px; }
+.d-modern .hd-logo { height: 26px; }
+.d-modern .sh { align-items: baseline; gap: 1em; border-bottom: 1px solid rgba(0,0,0,.12); padding-bottom: .4em; }
+.d-modern .sh-num { display: inline; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: .85em; letter-spacing: .1em; color: var(--accent); }
+.d-modern .sh h2 { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.5em; letter-spacing: .02em; text-transform: uppercase; }
+.d-modern .pk { text-align: left; background: #f4f4f4; border: 0; }
+.d-modern .pk-feat { background: var(--ink); color: #fff; }
+.d-modern .pk-feat .pk-hours, .d-modern .pk-feat .ls li { color: #ddd; }
+.d-modern .pk-feat .ls { border-color: rgba(255,255,255,.2); }
+.d-modern .pk-feat .ls li::before { background: #fff; }
+.d-modern .pk-badge { border-radius: 0; background: #fff; color: #111; }
+.d-modern .pk-name { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: .95em; letter-spacing: .1em; }
+.d-modern .pk-price { font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.d-modern .tl-dot { border-radius: 0; background: var(--ink); }
+.d-modern .thx { text-align: left; }
+.d-modern .thx-title { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 3.2em; text-transform: uppercase; letter-spacing: .04em; }
+.d-modern .intro p:first-child { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.2em; }
+
+/* ======================= 5 ROMANTIC BLUSH ======================= */
+.d-blush .cv { text-align: center; }
+.d-blush .sp-tl { top: -10px; left: -14px; transform: rotate(180deg) scaleX(-1); }
+.d-blush .sp-br { bottom: -12px; right: -12px; }
+.d-blush .cv-kicker { position: absolute; top: 78px; left: 0; right: 0; font-size: 14px; letter-spacing: .5em; text-transform: uppercase; color: var(--accent); }
+.d-blush .cv-names { position: absolute; top: 108px; left: 30px; right: 30px; margin: 0; font-family: var(--script); font-weight: 400; font-size: 78px; line-height: 1.35; }
+.d-blush .cv-oval { position: absolute; top: 250px; left: 165px; width: 464px; height: 620px; border: 1px solid var(--accent); border-radius: 50%; padding: 14px; }
+.d-blush .cv-photo { width: 100%; height: 100%; border-radius: 50%; }
+.d-blush .cv-meta { position: absolute; top: 900px; left: 0; right: 0; font-family: var(--serif); font-size: 22px; letter-spacing: .16em; text-transform: uppercase; }
+.d-blush .cv-meta2 { position: absolute; top: 936px; left: 0; right: 0; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); }
+.d-blush .cv-logo { position: absolute; top: 980px; left: 0; right: 0; margin: 0 auto; width: 150px; }
+.d-blush .sh { justify-content: center; }
+.d-blush .sh h2 { font-family: var(--script); font-size: 3.4em; letter-spacing: 0; color: var(--ink); }
+.d-blush .about-photo { border-radius: 50%; width: 16em; height: 21em; }
+.d-blush .about .sh { justify-content: flex-start; }
+.d-blush .pk { border-radius: 1.2em; background: rgba(255,255,255,.55); border-color: rgba(199,154,143,.45); }
+
+.d-blush .p-packages .lead, .d-blush .valid { text-align: center; }
+.d-blush .gal-ph { border-radius: 50%; height: 12em; }
+.d-blush .tl-dot { width: .7em; height: .7em; background: transparent; border: 1px solid var(--accent); }
+.d-editorial .contact, .d-modern .contact { justify-content: start; }
+
+/* logo choice: keep each logo kind at a sensible size wherever it is placed */
+.pp .cv-logo.lg-mark, .pp .end-logo.lg-mark { width: 78px !important; }
+.pp .cv-logo.lg-word, .pp .end-logo.lg-word { width: 240px !important; }
+.pp .cv-logo.lg-full, .pp .end-logo.lg-full { width: 160px; }
+.d-fineart .cv-logo.lg-full { width: 150px !important; top: 990px; }
+.d-modern .cv-word.lg-mark { width: 60px; }
+.d-modern .cv-word.lg-full { width: 130px; top: 56px; }
+
+/* ===================== DUO designs (2 pages, 10-draft collection) ===================== */
+.duo { --sans: Arial, 'Helvetica Neue', sans-serif; }
+.duo .page { padding: 18mm; font-family: var(--sans); font-size: 12px; line-height: 1.55; }
+.duo h1, .duo h2, .duo p { margin-top: 0; }
+.duo h1 { font-family: var(--serif); font-weight: 400; line-height: .94; }
+.duo h2 { font-family: var(--serif); font-weight: 400; line-height: 1.05; }
+.duo .eyebrow { text-transform: uppercase; letter-spacing: .24em; font-size: 9px; font-weight: 700; }
+.duo .du-foot { position: absolute; left: 18mm; right: 18mm; bottom: 12mm; display: flex; justify-content: space-between; align-items: center; font-size: 8px; letter-spacing: .14em; text-transform: uppercase; }
+.duo .du-foot-logo { width: 34mm; }
+.duo .du-photo { background-color: rgba(127,127,127,.15); }
+/* offer page */
+.duo .du-details { display: flex; flex-direction: column; padding-bottom: 24mm; }
+.duo .du-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8mm; flex: none; }
+.duo .du-head h2 { font-size: 36px; margin: 5mm 0 0; max-width: 112mm; }
+.duo .du-head-logo { width: 52mm; margin-top: 2mm; }
+.duo .du-hr { height: 1px; background: currentColor; opacity: .22; flex: none; }
+.duo .du-details .pc { padding-top: 0; }
+.duo .du-intro { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, .75fr); gap: 4.4em; padding: 3.2em 0 2.6em; }
+.duo .du-body p { margin: 0 0 .7em; }
+.duo .du-invest { border-left: 2px solid var(--accent); padding-left: 2.2em; }
+.duo .du-invest .eyebrow { font-size: .75em; }
+.duo .du-price { font-family: var(--serif); font-size: 3.1em; line-height: 1.15; margin: .25em 0 .2em; }
+.duo .du-small { font-size: .82em; }
+.duo .du-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3.6em; }
+.duo .du-cols .eyebrow { font-size: .75em; margin-bottom: .5em; }
+.duo .du-list, .duo .du-tl { list-style: none; padding: 0; margin: 0; }
+.duo .du-list li { padding: .55em 0; border-bottom: 1px solid rgba(127,127,127,.22); }
+.duo .du-tl li { display: grid; grid-template-columns: 4.4em 1fr; padding: .55em 0; border-bottom: 1px solid rgba(127,127,127,.22); }
+.duo .du-tl span { font-weight: 700; color: var(--accent); }
+.duo .du-extras { margin-top: 2.6em; }
+.duo .du-pay { margin: 2.2em 0 0; opacity: .8; }
+.duo .du-details .pcw { margin: 0; min-height: 100%; display: flex; flex-direction: column; }
+.duo .du-closing { margin-top: auto; padding-top: 2.4em; }
+.duo .du-closing h2 { font-size: 2.05em; margin-bottom: .6em; }
+.duo .du-closing p { opacity: .75; margin: 0; }
+
+/* 1 Editorial Minimal */
+.d-mr-editorial .du-cover { padding: 0; }
+.d-mr-editorial .du-photo { position: absolute; left: 78mm; top: 0; width: 132mm; height: 297mm; }
+.d-mr-editorial .du-copy { position: absolute; left: 18mm; top: 32mm; width: 56mm; z-index: 2; }
+.d-mr-editorial .du-cover h1 { font-size: 46px; margin: 26mm 0 12mm; }
+.d-mr-editorial .du-couple { font-family: var(--serif); font-size: 18px; }
+.d-mr-editorial .du-meta { display: grid; gap: 4px; font-size: 10px; }
+.d-mr-editorial .du-cover .du-foot span:last-child { color: #fff; }
+/* 2 Blush Arch */
+.d-mr-arch { --sans: 'Trebuchet MS', sans-serif; }
+.d-mr-arch .du-cover { text-align: center; }
+.d-mr-arch .du-cover .du-photo { width: 128mm; height: 185mm; margin: 0 auto 8mm; border-radius: 64mm 64mm 0 0; }
+.d-mr-arch .du-logo { width: 62mm; margin: 0 auto 6mm; }
+.d-mr-arch .du-cover h1 { font-size: 42px; margin: 7mm 0 4mm; }
+/* 3 Luxury Black */
+.d-mr-black .du-cover { padding: 0; }
+.d-mr-black .du-top { height: 32mm; display: flex; align-items: center; justify-content: space-between; padding: 0 18mm; }
+.d-mr-black .du-top .du-logo { width: 55mm; }
+.d-mr-black .du-cover .du-photo { height: 170mm; }
+.d-mr-black .du-copy { padding: 13mm 18mm; }
+.d-mr-black .du-cover h1 { font-size: 54px; margin-bottom: 6mm; }
+.d-mr-black .du-couple { font-size: 15px; letter-spacing: .06em; margin-bottom: 2mm; }
+.d-mr-black .du-accent { color: var(--accent); }
+.d-mr-black .du-list li, .d-mr-black .du-tl li { border-bottom-color: rgba(255,255,255,.14); }
+/* 4 Bordeaux Classic */
+.d-mr-bordeaux { --sans: Verdana, sans-serif; }
+.d-mr-bordeaux .du-cover { padding: 12mm; }
+.d-mr-bordeaux .du-frame { border: 1px solid var(--ink); height: 273mm; padding: 14mm 18mm; text-align: center; overflow: hidden; }
+.d-mr-bordeaux .du-mark { height: 15mm; width: auto; margin: 0 auto 5mm; }
+.d-mr-bordeaux .du-cover h1 { font-size: 48px; margin: 6mm 0 8mm; }
+.d-mr-bordeaux .du-cover .du-photo { width: 104mm; height: 138mm; border-radius: 52mm; margin: 0 auto 8mm; }
+.d-mr-bordeaux .du-couple { font-family: var(--serif); font-size: 20px; margin-bottom: 2mm; }
+.d-mr-bordeaux .du-cover .du-foot { left: 30mm; right: 30mm; bottom: 17mm; }
+/* 5 Botanical Sage */
+.d-mr-sage .du-leaf { position: absolute; width: 130mm; height: 130mm; border: 1px solid var(--accent); border-radius: 0 100% 0 100%; left: -45mm; top: -40mm; }
+.d-mr-sage .du-copy { position: absolute; left: 18mm; top: 48mm; width: 92mm; }
+.d-mr-sage .du-cover h1 { font-size: 53px; margin: 14mm 0 10mm; }
+.d-mr-sage .du-couple { font-family: var(--serif); font-size: 19px; margin-bottom: 2mm; }
+.d-mr-sage .du-cover .du-photo { position: absolute; right: 0; top: 0; width: 82mm; height: 297mm; }
+.d-mr-sage .du-logo { position: absolute; left: 18mm; bottom: 24mm; width: 64mm; }
+.d-mr-sage .du-cover .du-foot { right: 92mm; }
+/* 6 Modern Grid */
+.d-mr-grid { --sans: 'Arial Narrow', Arial, sans-serif; }
+.d-mr-grid .du-cover { padding: 14mm; }
+.d-mr-grid .du-grid { display: grid; grid-template-columns: 28mm 1fr; grid-template-rows: 68mm 145mm 38mm; gap: 7mm; height: 100%; }
+.d-mr-grid .du-num { font-size: 60px; font-weight: 700; color: var(--accent); line-height: .8; }
+.d-mr-grid .du-cover h1 { font: 700 48px/.9 var(--sans); letter-spacing: -.05em; margin-top: 5mm; }
+.d-mr-grid .du-mark { width: 20mm; align-self: end; }
+.d-mr-grid .du-meta { display: grid; gap: 4px; align-content: start; font-size: 11px; }
+.d-mr-grid .du-meta b { font-size: 18px; }
+.d-mr-grid .du-head h2 { font: 700 34px/1 var(--sans); letter-spacing: -.035em; }
+.d-mr-grid .du-price { font-family: var(--sans); font-weight: 700; }
+.d-mr-grid .du-closing h2 { font-family: var(--sans); font-weight: 700; letter-spacing: -.03em; }
+/* 7 Fine Art Ivory */
+.d-mr-ivory { --sans: 'Trebuchet MS', sans-serif; }
+.d-mr-ivory .du-cover { text-align: center; }
+.d-mr-ivory .du-logo { width: 62mm; margin: 0 auto 7mm; }
+.d-mr-ivory .du-cover .du-photo { height: 165mm; width: 118mm; margin: 0 auto; }
+.d-mr-ivory .du-copy { padding-top: 9mm; }
+.d-mr-ivory .du-cover h1 { font-size: 46px; margin: 7mm 0; }
+.d-mr-ivory .du-couple { font-family: var(--serif); font-size: 18px; margin-bottom: 2mm; }
+.d-mr-ivory .du-muted { opacity: .62; }
+/* 8 Cinematic */
+.d-mr-cinema .du-cover { padding: 0; }
+.d-mr-cinema .du-cover .du-photo { height: 160mm; width: 100%; }
+.d-mr-cinema .du-copy { padding: 14mm 18mm; width: 130mm; }
+.d-mr-cinema .du-cover h1 { font-size: 55px; margin: 8mm 0; }
+.d-mr-cinema .du-couple { font-family: var(--serif); font-size: 18px; }
+.d-mr-cinema .du-rule { height: 1px; width: 40mm; background: currentColor; opacity: .35; margin: 5mm 0; }
+.d-mr-cinema .du-logo { position: absolute; right: 16mm; bottom: 22mm; width: 58mm; }
+.d-mr-cinema .du-list li, .d-mr-cinema .du-tl li { border-bottom-color: rgba(255,255,255,.14); }
+/* 9 Swiss Typography */
+.d-mr-swiss .du-cover { padding: 15mm; }
+.d-mr-swiss .du-swiss { height: 100%; display: grid; grid-template-columns: 1fr 60mm; grid-template-rows: 32mm 66mm 2mm 125mm 26mm; gap: 4mm; }
+.d-mr-swiss .du-mark { width: 16mm; justify-self: end; }
+.d-mr-swiss .du-cover h1 { font: 700 54px/.88 var(--sans); letter-spacing: -.06em; grid-column: 1 / 3; }
+.d-mr-swiss .du-red { height: 6px; background: var(--accent); grid-column: 1 / 3; }
+.d-mr-swiss .du-swiss .du-photo { grid-column: 1 / 3; }
+.d-mr-swiss .du-meta { grid-column: 1 / 3; display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; }
+.d-mr-swiss .du-meta b { font-size: 15px; }
+.d-mr-swiss .du-head h2, .d-mr-swiss .du-closing h2 { font-family: var(--sans); font-weight: 700; letter-spacing: -.04em; }
+/* 10 Soft Lilac */
+.d-mr-lilac { --sans: 'Trebuchet MS', sans-serif; }
+.d-mr-lilac .du-halo { position: absolute; width: 180mm; height: 180mm; background: var(--accent); opacity: .28; border-radius: 50%; left: -60mm; top: -65mm; }
+.d-mr-lilac .du-copy { position: absolute; left: 18mm; top: 35mm; width: 95mm; z-index: 2; }
+.d-mr-lilac .du-cover h1 { font-size: 48px; margin: 14mm 0; }
+.d-mr-lilac .du-couple { font-family: var(--serif); font-size: 19px; margin-bottom: 2mm; }
+.d-mr-lilac .du-polaroid { position: absolute; width: 112mm; height: 165mm; right: 16mm; bottom: 46mm; transform: rotate(2deg); box-shadow: 0 16px 35px rgba(0,0,0,.14); border: 10px solid #fff; background: #fff; }
+.d-mr-lilac .du-polaroid .du-photo { width: 100%; height: 100%; }
+.d-mr-lilac .du-logo { position: absolute; left: 18mm; bottom: 22mm; width: 60mm; }
+
+/* long couple names: scale down large cover headlines */
+.d-blush .long .cv-names { font-size: 56px; top: 118px; }
+.d-modern .long .cv-names { font-size: 56px; }
+.d-mr-arch .long h1 { font-size: 32px; }
+.duo .long .du-couple { font-size: 15px; }
