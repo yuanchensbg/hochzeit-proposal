@@ -207,22 +207,29 @@
       (c.signature ? '<div class="sig">' + esc(c.signature) + '</div>' : '') + '</div></div>', 'p-about');
   }
 
+  // Visible packages: switched on and not empty (an emptied package is not an option).
+  function shownPackages(c) {
+    return (c.packages || []).filter(function (p) {
+      return p && p.show !== false && (String(p.name || '').trim() || String(p.price || '').trim());
+    });
+  }
   function packagesPage(ctx, withIntro) {
     var c = ctx.c, v = ctx.v;
-    var pk = (c.packages || []).filter(function (p) { return p.show !== false; });
-    var cols = pk.length >= 4 ? 2 : Math.max(1, pk.length);
-    var anyFeat = pk.some(function (p) { return p.featured; });
+    var pk = shownPackages(c), n = pk.length;
+    var layout = n <= 1 ? 'one' : n === 2 ? 'two' : n === 3 ? 'three' : 'many';
+    var anyFeat = n > 1 && pk.some(function (p) { return p.featured; });   // a single package needs no "recommended" badge
     var cards = pk.map(function (p) {
-      return '<div class="pk' + (p.featured ? ' pk-feat' : '') + '">' +
-        (p.featured ? '<div class="pk-badge">' + esc(c.featuredLabel || 'Empfehlung') + '</div>' : (anyFeat ? '<div class="pk-badge ph">&nbsp;</div>' : '')) +
-        '<div class="pk-name">' + esc(p.name) + '</div>' +
-        '<div class="pk-hours">' + esc(p.hours) + '</div>' +
-        '<div class="pk-price">' + esc(p.price) + '</div>' + list(p.items) + '</div>';
+      var feat = n > 1 && p.featured;
+      var head = (feat ? '<div class="pk-badge">' + esc(c.featuredLabel || 'Empfehlung') + '</div>' : (anyFeat ? '<div class="pk-badge ph">&nbsp;</div>' : '')) +
+        '<div class="pk-name">' + esc(p.name) + '</div><div class="pk-hours">' + esc(p.hours) + '</div><div class="pk-price">' + esc(p.price) + '</div>';
+      return '<div class="pk' + (feat ? ' pk-feat' : '') + '">' + (n <= 1 ? '<div class="pk-main">' + head + '</div><div class="pk-body">' + list(p.items) + '</div>' : head + list(p.items)) + '</div>';
     }).join('');
+    var title = n <= 1 ? (c.packagesTitleSingle || 'Euer Paket') : c.packagesTitle;
+    var intro = n <= 1 ? (c.packagesIntroSingle != null ? c.packagesIntroSingle : '') : c.packagesIntro;
     return inner(ctx,
       (withIntro ? '<div class="intro">' + paras(c.intro, v) + '</div>' : '') +
-      head(ctx.n++, c.packagesTitle) + '<div class="lead">' + paras(c.packagesIntro, v) + '</div>' +
-      '<div class="pks" style="grid-template-columns:repeat(' + cols + ',1fr)">' + cards + '</div>', 'p-packages');
+      head(ctx.n++, title) + (intro ? '<div class="lead">' + paras(intro, v) + '</div>' : '') +
+      '<div class="pks pks-' + layout + '">' + cards + '</div>', 'p-packages');
   }
 
   function timelineHTML(ctx) {
@@ -335,10 +342,10 @@
 
   function duoDetails(ctx) {
     var c = ctx.c, v = ctx.v, s = ctx.cfg.studio || {};
-    var pk = (c.packages || []).filter(function (p) { return p.show !== false; });
+    var pk = shownPackages(c);
     var main = pk.filter(function (p) { return p.featured; })[0] || pk[0] || {};
     var services = (main.items && main.items.length ? main.items : c.services) || [];
-    var extras = (c.extras && c.extras.length) ? c.extras : pk.filter(function (p) { return p !== main; }).map(function (p) { return p.name + (p.hours ? ' (' + p.hours + ')' : '') + ' · ' + p.price; });
+    var extras = pk.length < 2 ? [] : pk.filter(function (p) { return p !== main; }).map(function (p) { return p.name + (p.hours ? ' (' + p.hours + ')' : '') + ' · ' + p.price; });
     var tl = (c.timeline || []).filter(function (t) { return t && (t.time || t.label); });
     var closing = fmt(c.closing || 'Ich freue mich darauf,\neure Geschichte festzuhalten.', v);
     return '<div class="page du-details">' +
@@ -443,7 +450,7 @@
 
   window.PP = {
     DESIGNS: DESIGNS, DUO: DUO, getDesigns: getDesigns, designCSS: designCSS, TEMPLATE_KEYS: TEMPLATE_KEYS, render: render,
-    prepare: prepare, fmt: fmt, vars: vars, dateLong: dateLong, dateShort: dateShort, addDays: addDays, logoSrc: logoSrc, esc: esc
+    prepare: prepare, shownPackages: shownPackages, fmt: fmt, vars: vars, dateLong: dateLong, dateShort: dateShort, addDays: addDays, logoSrc: logoSrc, esc: esc
   };
 })();
 

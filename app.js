@@ -525,7 +525,8 @@
       '<details class="box"' + (opt.openIntro ? ' open' : '') + '><summary>Begrüßung</summary>' + txt('intro', 'Begrüßungstext', 6) + '</details>' +
       '<details class="box"><summary>Über mich</summary>' + txt('aboutTitle', 'Überschrift') + txt('about', 'Text', 7) + txt('signature', 'Unterschrift') + '</details>' +
       '<details class="box"' + (opt.openPackages ? ' open' : '') + '><summary>Pakete &amp; Preise</summary>' + txt('packagesTitle', 'Überschrift') + txt('packagesIntro', 'Einleitung', 3) +
-        txt('featuredLabel', 'Text für empfohlenes Paket') + '<div id="pkList"></div><button class="btn ghost" type="button" id="pkAdd">+ Paket hinzufügen</button></details>' +
+        txt('featuredLabel', 'Text für empfohlenes Paket') +
+        txt('packagesTitleSingle', 'Überschrift bei nur einem Paket') + txt('packagesIntroSingle', 'Einleitung bei nur einem Paket', 2) + '<div id="pkList"></div><button class="btn ghost" type="button" id="pkAdd">+ Paket hinzufügen</button></details>' +
       '<details class="box"><summary>Leistungen &amp; Lieferung</summary>' + txt('servicesTitle', 'Überschrift Leistungen') + lines('services', 'Leistungen') +
         txt('deliveryTitle', 'Überschrift Lieferung') + lines('delivery', 'Lieferung') + '</details>' +
       '<details class="box"><summary>Ablauf</summary>' + txt('timelineTitle', 'Überschrift') + lines('timeline', 'Ablauf', 'eine Zeile pro Punkt: „14:00 Trauung“') + '</details>' +
@@ -920,9 +921,9 @@
     var ds = (cfg.designs || {})[pr.design] || {}, ink = ds.ink || '#1c1a19', accent = ds.accent || '#8a7f76', paper = ds.paper || '#ffffff';
     var font = "Georgia,'Times New Roman',serif", sans = "Helvetica,Arial,sans-serif";
     var body = esc($('#mailBody').value).split(/\n\s*\n/).map(function (p) { return '<p style="margin:0 0 14px;font:15px/1.6 ' + sans + ';color:' + ink + '">' + p.replace(/\n/g, '<br>') + '</p>'; }).join('');
-    var pk = (c.sections || {}).packages === false ? [] : (c.packages || []).filter(function (p) { return p.show !== false; });
+    var pk = (c.sections || {}).packages === false ? [] : PP.shownPackages(c);
     var pkRows = pk.map(function (p) {
-      return '<tr><td style="padding:10px 0;border-bottom:1px solid #e8e2dc;font:15px ' + font + ';color:' + ink + '">' + esc(p.name) + (p.featured ? ' <span style="font:11px ' + sans + ';color:' + accent + ';letter-spacing:1px;text-transform:uppercase">· ' + esc(c.featuredLabel || 'Empfehlung') + '</span>' : '') +
+      return '<tr><td style="padding:10px 0;border-bottom:1px solid #e8e2dc;font:15px ' + font + ';color:' + ink + '">' + esc(p.name) + (p.featured && pk.length > 1 ? ' <span style="font:11px ' + sans + ';color:' + accent + ';letter-spacing:1px;text-transform:uppercase">· ' + esc(c.featuredLabel || 'Empfehlung') + '</span>' : '') +
         '<br><span style="font:12px ' + sans + ';color:#8a817a">' + esc(p.hours || '') + '</span></td><td align="right" style="padding:10px 0;border-bottom:1px solid #e8e2dc;font:16px ' + font + ';color:' + ink + '">' + esc(p.price || '') + '</td></tr>';
     }).join('');
     return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head><body style="margin:0;padding:0;background:#f3efeb">' +

@@ -40,7 +40,16 @@
 .pp .about-txt { flex: 1; }
 .pp .sig { font-family: var(--script); font-size: 3em; line-height: 1; margin-top: .2em; color: var(--ink); }
 
-.pp .pks { display: grid; gap: 1.1em; margin-top: 1.4em; }
+.pp .pks { display: grid; gap: 1.1em; margin-top: 1.4em; justify-content: center; }
+.pp .pks-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pp .pks-many { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pp .pks-two { grid-template-columns: repeat(2, minmax(0, 19em)); gap: 1.6em; }
+/* one package: a wide horizontal card – name, duration and price left, services right */
+.pp .pks-one { grid-template-columns: minmax(0, 1fr); }
+.pp .pks-one .pk { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); gap: 2.2em; align-items: center; padding: 2.2em 2.4em; text-align: left; }
+.pp .pks-one .pk-main { text-align: center; padding-right: 2.2em; border-right: 1px solid rgba(0,0,0,.12); }
+.pp .pks-one .pk .ls { border-top: 0; padding-top: 0; font-size: .95em; }
+.pp .pks-one .pk-price { margin-bottom: 0; }
 .pp .pks, .pp .two { grid-auto-columns: minmax(0, 1fr); }
 .pp .pk, .pp .two > div { min-width: 0; }
 .pp .pk { position: relative; border: 1px solid rgba(0,0,0,.14); padding: 1.8em 1.05em 1.5em; text-align: center; background: rgba(255,255,255,.35); }
@@ -330,3 +339,11 @@
 .d-modern .long .cv-names { font-size: 56px; }
 .d-mr-arch .long h1 { font-size: 32px; }
 .duo .long .du-couple { font-size: 15px; }
+
+/* single-package card per design */
+.d-editorial .pks-one .pk, .d-modern .pks-one .pk { padding: 1.6em 0 0; }
+.d-editorial .pks-one .pk-main, .d-modern .pks-one .pk-main { text-align: left; }
+.d-modern .pks-one .pk { padding: 2em 2.2em; }
+.d-modern .pks-one .pk-main { border-right-color: rgba(0,0,0,.15); }
+.d-fineart .pks-one .pk { border-radius: 1.4em; padding-top: 2.2em; }
+.d-blush .pks-one .pk-main, .d-fineart .pks-one .pk-main { border-right-color: rgba(176,154,124,.35); }

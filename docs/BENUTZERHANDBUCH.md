@@ -46,6 +46,8 @@ Gleicher Name = Vorlage überschreiben, ✕ im Auswahlfenster = löschen. Vorlag
 | **Vorschau** | (Handy) Alle Seiten wie im PDF – mit zwei Fingern zoomen, ⤢ passt wieder ein. Am PC immer rechts sichtbar (− / + / ⤢). Außerhalb der Vorschau ist Zoomen am Handy gesperrt. |
 | **Senden** | siehe Kapitel 5. |
 
+**Pakete:** Nur angehakte Pakete mit Name oder Preis erscheinen. Bei **einem** Paket zeigt das Angebot eine breite Paketkarte mit der Überschrift „Euer Paket“ (Text unter *Inhalte → Pakete & Preise* änderbar), ohne „Empfehlung“ und ohne „Weitere Optionen“. Bei zwei Paketen stehen zwei Karten mittig, ab drei in Spalten.
+
 Platzhalter in Texten: `{name1} {name2} {namen} {datum} {ort} {studio} {owner} {gueltig}`.
 
 ## 4. Foto-Datenbank

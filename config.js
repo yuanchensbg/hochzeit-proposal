@@ -1,6 +1,7 @@
 window.APP_CONFIG = {
-  "appVersion": "1.3",
+  "appVersion": "1.4",
   "changelog": [
+    { "version": "1.4", "date": "2026-11-24", "notes": ["Nur ein Paket: kein „Weitere Optionen“ und kein „Empfehlung“-Badge mehr; Überschrift „Euer Paket“ mit eigenem Einleitungstext", "Paket-Layout passt sich an: 1 Paket = breite Karte, 2 Pakete = zwei Karten mittig, 3 Pakete = drei Spalten", "Leer geräumte Pakete (ohne Name und Preis) werden nicht mehr angezeigt"] },
     { "version": "1.3", "date": "2026-11-23", "notes": ["Samsung Internet: App wird dort nicht mehr als installierbar angeboten (Play Protect blockierte die Samsung-Installation) – Installation über Chrome"] },
     { "version": "1.2", "date": "2026-11-23", "notes": ["Vorlagen: Angebot mit Design, Paketen, Preisen, Texten und Fotos als Vorlage speichern; neuer Entwurf aus Vorlage", "Cloud-Zugang wird verschlüsselt mitgeliefert – Kundin gibt pro Gerät einmal das Cloud-Passwort ein", "Handy-Vorschau: Seiten werden exakt wie im PDF verkleinert (kein Verziehen mehr)", "Neues Gerät lädt zuerst die Cloud-Angebote statt einen leeren Entwurf anzulegen", "WhatsApp/Teilen: Teilen-Menü öffnet direkt beim Antippen; falls ein Gerät blockiert, Alternative „PDF speichern & WhatsApp öffnen“", "Samsung Internet: Installation über Chrome (Play Protect blockiert die Samsung-Installation)"] },
     { "version": "1.1", "date": "2026-11-23", "notes": ["Handy: kein Zoomen mehr in der App (verhindert verzogene Ansicht), Eingabefelder ohne Auto-Zoom", "Vorschau: mit zwei Fingern zoomen"] },
@@ -39,6 +40,8 @@ window.APP_CONFIG = {
     "about": "Ich bin Michaela – Fotografin aus Leidenschaft. Ich halte echte Momente fest: die Nervosität beim Getting Ready, das erste Ansehen, die Tränen beim Ja-Wort und die ausgelassenen Stunden auf der Tanzfläche.\n\nMeine Bilder sind natürlich, zeitlos und voller Gefühl – damit ihr euren Tag immer wieder neu erleben könnt.",
     "signature": "Michaela",
     "featuredLabel": "Empfehlung",
+    "packagesTitleSingle": "Euer Paket",
+    "packagesIntroSingle": "Abgestimmt auf euren Tag – alle Leistungen auf einen Blick.",
     "packagesTitle": "Pakete",
     "packagesIntro": "Wählt das Paket, das zu eurem Tag passt – jedes Paket kann individuell angepasst werden.",
     "packages": [

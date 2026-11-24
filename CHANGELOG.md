@@ -2,6 +2,12 @@
 
 Alle Versionen der Hochzeitsangebot-App. Format: `Major.Minor` – Minor bei jedem Update, Major bei großen Umbauten.
 
+## 1.4 – 2026-11-24
+
+- Nur ein Paket: kein „Weitere Optionen“ und kein „Empfehlung“-Badge mehr; Überschrift „Euer Paket“ mit eigenem Einleitungstext
+- Paket-Layout passt sich an: 1 Paket = breite Karte, 2 Pakete = zwei Karten mittig, 3 Pakete = drei Spalten
+- Leer geräumte Pakete (ohne Name und Preis) werden nicht mehr angezeigt
+
 ## 1.3 – 2026-11-23
 
 - Samsung Internet: App wird dort nicht mehr als installierbar angeboten (Play Protect blockierte die Samsung-Installation) – Installation über Chrome
