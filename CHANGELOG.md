@@ -2,6 +2,11 @@
 
 Alle Versionen der Hochzeitsangebot-App. Format: `Major.Minor` – Minor bei jedem Update, Major bei großen Umbauten.
 
+## 1.5 – 2026-11-24
+
+- Zweiseitige Designs: größere, besser lesbare Schrift auf der Angebotsseite; passt sich automatisch an die Textmenge an
+- Alle 15 Designs mit 1, 2 und 3 Paketen geprüft
+
 ## 1.4 – 2026-11-24
 
 - Nur ein Paket: kein „Weitere Optionen“ und kein „Empfehlung“-Badge mehr; Überschrift „Euer Paket“ mit eigenem Einleitungstext

@@ -351,7 +351,7 @@
     return '<div class="page du-details">' +
       '<div class="du-head"><div><div class="eyebrow">Euer persönliches Angebot</div><h2>' + esc(main.name || c.packagesTitle || c.title) + '</h2></div>' + logo('word', ctx.ds.ink, 'du-head-logo') + '</div>' +
       '<div class="du-hr"></div>' +
-      '<div class="pc" data-fs="12.5"><div class="pcw">' +
+      '<div class="pc" data-fs="15.5"><div class="pcw">' +
         '<div class="du-intro"><div class="du-body">' + paras(c.intro, v) + '</div>' +
         '<div class="du-invest"><div class="eyebrow">' + esc(c.paymentTitle || 'Investition') + '</div><div class="du-price">' + esc(main.price || '') + '</div><div class="du-small">' + esc(main.hours || '') + '</div></div></div>' +
         '<div class="du-cols"><section><div class="eyebrow">Enthalten</div><ul class="du-list">' + services.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></section>' +

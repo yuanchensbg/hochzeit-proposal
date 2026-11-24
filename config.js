@@ -1,6 +1,7 @@
 window.APP_CONFIG = {
-  "appVersion": "1.4",
+  "appVersion": "1.5",
   "changelog": [
+    { "version": "1.5", "date": "2026-11-24", "notes": ["Zweiseitige Designs: größere, besser lesbare Schrift auf der Angebotsseite; passt sich automatisch an die Textmenge an", "Alle 15 Designs mit 1, 2 und 3 Paketen geprüft"] },
     { "version": "1.4", "date": "2026-11-24", "notes": ["Nur ein Paket: kein „Weitere Optionen“ und kein „Empfehlung“-Badge mehr; Überschrift „Euer Paket“ mit eigenem Einleitungstext", "Paket-Layout passt sich an: 1 Paket = breite Karte, 2 Pakete = zwei Karten mittig, 3 Pakete = drei Spalten", "Leer geräumte Pakete (ohne Name und Preis) werden nicht mehr angezeigt"] },
     { "version": "1.3", "date": "2026-11-23", "notes": ["Samsung Internet: App wird dort nicht mehr als installierbar angeboten (Play Protect blockierte die Samsung-Installation) – Installation über Chrome"] },
     { "version": "1.2", "date": "2026-11-23", "notes": ["Vorlagen: Angebot mit Design, Paketen, Preisen, Texten und Fotos als Vorlage speichern; neuer Entwurf aus Vorlage", "Cloud-Zugang wird verschlüsselt mitgeliefert – Kundin gibt pro Gerät einmal das Cloud-Passwort ein", "Handy-Vorschau: Seiten werden exakt wie im PDF verkleinert (kein Verziehen mehr)", "Neues Gerät lädt zuerst die Cloud-Angebote statt einen leeren Entwurf anzulegen", "WhatsApp/Teilen: Teilen-Menü öffnet direkt beim Antippen; falls ein Gerät blockiert, Alternative „PDF speichern & WhatsApp öffnen“", "Samsung Internet: Installation über Chrome (Play Protect blockiert die Samsung-Installation)"] },
